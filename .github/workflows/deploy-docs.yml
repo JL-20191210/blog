@@ -25,7 +25,7 @@ jobs:
       - name: 设置 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
           cache: npm
 
       - name: 安装依赖
@@ -42,9 +42,7 @@ jobs:
 
       - name: 部署文档
         uses: JamesIves/github-pages-deploy-action@v4
-        env:
-          GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
         with:
           # 部署文档
-          branch: blog_pages
+          branch: gh-pages
           folder: src/.vuepress/dist
