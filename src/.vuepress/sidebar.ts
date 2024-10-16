@@ -11,6 +11,12 @@ export default sidebar({
       children: "structure",
     },
     {
+      text: "Java",
+      icon: "fa-brands fa-java",
+      prefix: "Java/",
+      children: "structure",
+    },
+    {
       text: "文章",
       icon: "book",
       prefix: "posts/",

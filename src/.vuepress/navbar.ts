@@ -2,7 +2,38 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  "/demo/",
+  {
+    text: "Java",
+    icon: "fa-brands fa-java",
+    prefix: "/Java/",
+    children: [
+      { text: "函数式接口", icon: "pen-to-square", link: "函数式接口" },
+    ],
+  },
+  {
+    text: "Vue",
+    icon: "fa-brands fa-vuejs",
+    prefix: "/posts/",
+    children: [],
+  },
+  {
+    text: "Spring",
+    icon: "fa-solid fa-leaf",
+    prefix: "/posts/",
+    children: [],
+  },
+  {
+    text: "Docker",
+    icon: "fa-brands fa-docker",
+    prefix: "/posts/",
+    children: [],
+  },
+  {
+    text: "Linux",
+    icon: "fa-brands fa-linux",
+    prefix: "/posts/",
+    children: [],
+  },
   {
     text: "博文",
     icon: "pen-to-square",
@@ -44,6 +75,7 @@ export default navbar([
       "strawberry",
     ],
   },
+  "/demo/",
   {
     text: "V2 文档",
     icon: "book",
