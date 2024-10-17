@@ -1,4 +1,5 @@
 import { hopeTheme } from "vuepress-theme-hope";
+import { componentsPlugin } from "vuepress-plugin-components";
 
 import navbar from "./navbar.js";
 import sidebar from "./sidebar.js";
@@ -63,6 +64,26 @@ export default hopeTheme({
 
   // 在这里配置主题提供的插件
   plugins: {
+
+    // 添加 vuepress-plugin-components 插件配置
+    components: {
+      components: [
+        "ArtPlayer",
+        "Badge",
+        "BiliBili",
+        "CodePen",
+        "FontIcon",
+        "PDF",
+        "Share",
+        "SiteInfo",
+        "StackBlitz",
+        "VPBanner",
+        "VPCard",
+        "VidStack",
+        "XiGua",
+      ],
+    },
+    
     blog: true,
 
     // 启用之前需安装 @waline/client
@@ -73,9 +94,6 @@ export default hopeTheme({
     // },
     
 
-    components: {
-      components: ["Badge", "VPCard", "PDF","VidStack"],
-    },
 
     // 此处开启了很多功能用于演示，你应仅保留用到的功能。
     markdownImage: {

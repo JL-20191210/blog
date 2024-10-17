@@ -16,7 +16,7 @@ export default navbar([
     prefix: "/Python/",
     children: [
       {
-        text: "函数式接口",
+        text: "基础",
         icon: "book",
         prefix: "基础/",
         children: [
