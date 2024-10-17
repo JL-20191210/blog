@@ -11,6 +11,7 @@ tag:
 ## 前言
 >`Optional` 是 Java 8 引入的一个容器类，专门用于处理可能为 `null` 的值。它提供了一种优雅的方式来避免 `NullPointerException`（空指针异常）并简化对值的检查和处理。`Optional` 的使用鼓励开发者显式地处理可能为空的场景，从而使代码更加健壮和可读。
 
+<!-- more -->
 ## 一、`Optional` 的引入背景
 
 >在 Java 中，`null` 用于表示对象缺失的情况，但直接操作 `null` 很容易导致 `NullPointerException`。传统的解决方案是通过显式的 `null` 检查来避免异常，但这种方式不仅使代码冗长，还容易引发错误。

@@ -6,7 +6,9 @@ category:
 tag:
   - Java8特性
 ---
-
+> 摘要
+> list中存储实例对象，将list中实例对象的两个属性提取出来组成一个新的map
+<!-- more -->
 # Java Stream API
 ## 归约(**Reduction**)
 
