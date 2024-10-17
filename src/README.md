@@ -7,7 +7,7 @@ heroImage: ""
 heroText: 小满
 heroFullScreen: true
 tagline: 何须多虑盈亏事,终归小满胜万全
-bgImage: "https://t.mwm.moe/pc"
+bgImage: "https://api.zylearning.top/api/wallpaper"
 projects:
   - icon: project
     name: 项目名称
