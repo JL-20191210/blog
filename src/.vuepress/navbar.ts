@@ -11,6 +11,21 @@ export default navbar([
     ],
   },
   {
+    text: "Python",
+    icon: "fa-brands fa-python",
+    prefix: "/Python/",
+    children: [
+      {
+        text: "函数式接口",
+        icon: "book",
+        prefix: "基础/",
+        children: [
+          { text: "基础课件", icon: "pen-to-square", link: "video" }
+        ]
+      },
+    ],
+  },
+  {
     text: "Vue",
     icon: "fa-brands fa-vuejs",
     prefix: "/posts/",

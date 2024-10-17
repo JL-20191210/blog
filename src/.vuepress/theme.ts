@@ -29,6 +29,8 @@ export default hopeTheme({
   footer: "哟吼~",
   displayFooter: true,
 
+  fullscreen: true,
+
   // 博客相关
   blog: {
     description: "一个全栈攻城狮",
@@ -69,9 +71,10 @@ export default hopeTheme({
     //   provider: "Waline",
     //   serverURL: "https://waline-comment.vuejs.press",
     // },
+    
 
     components: {
-      components: ["Badge", "VPCard"],
+      components: ["Badge", "VPCard", "PDF","VidStack"],
     },
 
     // 此处开启了很多功能用于演示，你应仅保留用到的功能。
