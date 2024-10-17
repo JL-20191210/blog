@@ -25,6 +25,7 @@ export default hopeTheme({
 
   // 侧边栏
   sidebar,
+  
 
   // 页脚
   footer: "哟吼~",

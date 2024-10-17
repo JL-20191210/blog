@@ -3,25 +3,24 @@ import { navbar } from "vuepress-theme-hope";
 export default navbar([
   "/",
   {
-    text: "Java",
-    icon: "fa-brands fa-java",
+    text: "后端",
+    icon: "code",
     prefix: "/Java/",
-    children: [
-      { text: "函数式接口", icon: "pen-to-square", link: "函数式接口" },
-    ],
-  },
-  {
-    text: "Python",
-    icon: "fa-brands fa-python",
-    prefix: "/Python/",
+    link: "Java",
     children: [
       {
-        text: "基础",
-        icon: "book",
-        prefix: "基础/",
-        children: [
-          { text: "基础课件", icon: "pen-to-square", link: "video" }
-        ]
+        text: "Java",
+        link: "/Java/README.md",
+        icon: "fa-brands fa-java",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/Java/$",
+      },
+      {
+        text: "Python",
+        link: "/Python/README.md",
+        icon: "fa-brands fa-python",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/Python/$",
       },
     ],
   },
@@ -36,6 +35,28 @@ export default navbar([
     icon: "fa-solid fa-leaf",
     prefix: "/posts/",
     children: [],
+  },
+  {
+    text: "数据库",
+    icon: "code",
+    prefix: "/Java/",
+    link: "Java",
+    children: [
+      {
+        text: "Java",
+        link: "/Java/README.md",
+        icon: "fa-brands fa-java",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/Java/$",
+      },
+      {
+        text: "Python",
+        link: "/Python/README.md",
+        icon: "fa-brands fa-python",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/Python/$",
+      },
+    ],
   },
   {
     text: "Docker",

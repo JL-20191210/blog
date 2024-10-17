@@ -2,26 +2,20 @@ import { sidebar } from "vuepress-theme-hope";
 
 export default sidebar({
   "/": [
-     "",
-    {
-      text: "Java",
-      icon: "fa-brands fa-java",
-      prefix: "Java/",
-      children: "structure",
-    },
-    {
-      text: "文章",
-      icon: "book",
-      prefix: "posts/",
-      children: "structure",
-    },
+    "",
+    // {
+    //   text: "文章",
+    //   icon: "book",
+    //   prefix: "posts/",
+    //   children: "structure",
+    // },
     "intro",
     // {
     //   text: "幻灯片",
     //   icon: "person-chalkboard",
     //   link: "https://ecosystem.vuejs.press/zh/plugins/markdown/revealjs/demo.html",
     // },
-   
+
     // {
     //   text: "如何使用",
     //   icon: "laptop-code",
@@ -30,4 +24,13 @@ export default sidebar({
     //   children: "structure",
     // },
   ],
+  "/Java/": "structure",
+  "/Python/":"structure",
+  "/Vue/":"structure",
+  "/Spring/":"structure",
+  "/MySQL/":"structure",
+  "/Netty/":"structure",
+  "/Nginx/":"structure",
+  "/Redis/":"structure",
+  "/Docker/":"structure",
 });
