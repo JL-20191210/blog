@@ -24,7 +24,7 @@ export default sidebar({
     //   children: "structure",
     // },
   ],
-  "/Java/": "structure",
+  "/Java/":"structure" ,
   "/Python/":"structure",
   "/Vue/":"structure",
   "/Spring/":"structure",

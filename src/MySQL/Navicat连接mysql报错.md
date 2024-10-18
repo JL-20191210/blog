@@ -11,6 +11,8 @@ tag:
 2003-Can’t connect to MySQL server on ‘XXX.XX.XX.XX’（10060）
 ```
 
+<!-- more -->
+
 ## 1. **检查网络**
 
 ```shell

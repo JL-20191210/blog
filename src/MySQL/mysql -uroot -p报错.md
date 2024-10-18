@@ -8,6 +8,7 @@ tag:
 ---
 # mysql -uroot -p报错
 >使用xshell登录MySQL时,`mysql -uroot -p`报错Can't connect to local MySQL server through socket '/tmp/mysql.sock' 
+<!-- more -->
 
 **修改my.conf配置文件（MySQL8.0）**
 

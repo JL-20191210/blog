@@ -9,6 +9,7 @@ tag:
 
 # `UNION` 和 `UNION ALL`
 >`UNION` 和 `UNION ALL` 都是用于合并两个或多个 `SELECT` 语句的结果集，但它们之间有以下区别：
+<!-- more -->
 
 ## 1. **去重**
 

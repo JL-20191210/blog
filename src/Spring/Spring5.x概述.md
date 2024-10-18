@@ -10,6 +10,7 @@ tag:
 
 ## spring框架概述（Spring5.x）
 
+<!-- more -->
 1. spring是轻量级的开源的JavaEE框架
 2. spring可以解决企业应用开发的复杂性
 3. spring两大核心

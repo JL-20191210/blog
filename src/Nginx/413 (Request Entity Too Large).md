@@ -12,6 +12,7 @@ tag:
 >
 > 修改Nginx服务器的请求实体大小限制
 
+<!-- more -->
 ### 修改配置文件
 
 > vim /etc/nginx/conf.d/default.conf

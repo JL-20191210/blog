@@ -9,6 +9,7 @@ tag:
 # NIO 基础
 >non-blocking io 非阻塞 IO
 
+<!-- more -->
 ## 1. 三大组件
 
 ### 1.1 Channel & Buffer
