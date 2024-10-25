@@ -1,10 +1,13 @@
 ---
+cover: /assets/images/cover2.jpg
 icon: pen-to-square
 date: 2024-10-17
 category:
   - Netty
 tag:
   - 教程
+star: true
+sticky: true
 ---
 # Netty 入门
 ## 1. 概述

@@ -33,4 +33,6 @@ export default sidebar({
   "/Nginx/":"structure",
   "/Redis/":"structure",
   "/Docker/":"structure",
+  "/项目实战/":"structure",
+  "/Linux/":"structure",
 });
