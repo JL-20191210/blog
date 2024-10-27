@@ -1,3 +1,16 @@
+---
+icon: fa-brands fa-linux
+date: 2024-10-27
+category:
+  - Linux
+tag:
+  - 总结
+# star: true
+# sticky: true
+---
+
+# 界面切换
+
 > 设置默认开机模式
 
 ```bash

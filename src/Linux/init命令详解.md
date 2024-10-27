@@ -1,4 +1,16 @@
-# 概述
+---
+icon: fa-brands fa-linux
+date: 2024-10-27
+category:
+  - Linux
+tag:
+  - 总结
+# star: true
+# sticky: true
+---
+# init命令详解
+
+## 概述
 
 > 把控制命令发送给 init 守护程序。
 >
@@ -16,7 +28,7 @@
 >
 > 关机或重启计算机实际上是 `runlevel` 的调整，因此，也可使用 `init` 命令 (需 root 权限) 直接调整 `runlevel `进行相关操作。
 
-# 参数
+## 参数
 
 init + 运行级别
 
@@ -48,9 +60,9 @@ Commands:
 >
 >init 5：图形化界面
 
-# 开机默认级别设置
+## 开机默认级别设置
 
-## centos
+### centos
 
 修改`/etc/inittab`文件
 
@@ -83,7 +95,7 @@ Commands:
 >
 > :warning:不能设置为0或者6，会造成反复关机和重启
 
-## ubuntu
+### ubuntu
 
 修改`/etc/default/grub`文件
 
