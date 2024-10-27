@@ -1,3 +1,12 @@
+---
+title: Nginx
+icon: laptop-code
+date: 2024-10-17
+category:
+  - docker
+tag:
+  - 经验
+---
 # 安装Nginx
 
 ```bash

@@ -4,9 +4,9 @@ export default sidebar({
   "/": [
     "",
     // {
-    //   text: "文章",
-    //   icon: "book",
-    //   prefix: "posts/",
+    //   text: "MySQL",
+    //   icon: "fa-solid fa-database",
+    //   prefix: "/Database/MySQL",
     //   children: "structure",
     // },
     "intro",
@@ -28,7 +28,8 @@ export default sidebar({
   "/Python/":"structure",
   "/Vue/":"structure",
   "/Spring/":"structure",
-  "/MySQL/":"structure",
+  "/SpringCloud/":"structure",
+  "/Database/":"structure",
   "/Netty/":"structure",
   "/Nginx/":"structure",
   "/Redis/":"structure",

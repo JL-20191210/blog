@@ -1,3 +1,12 @@
+---
+title: 构建SpringBoot镜像
+icon: laptop-code
+date: 2024-10-17
+category:
+  - docker
+tag:
+  - 经验
+---
 # Docker构建SpringBoot镜像
 
 ## 1. 什么是 Dockerfile ?
@@ -5,7 +14,7 @@
 ![img](Docker构建SpringBoot镜像.assets\202410271510023.jpeg)
 
 Dockerfile 是用于构建 Docker 镜像的文本文件，其中包含了一系列的指令，每个指令对应着镜像构建过程中的一步操作。通过 Dockerfile，开发者可以定义镜像中包含的文件、环境变量、运行命令等配置。
-
+<!--more-->
 ## 2. 创建 Dockerfile
 
 在 `weblog-web` 入口模块下，创建一个名为 `Dockerfile` 的文件：

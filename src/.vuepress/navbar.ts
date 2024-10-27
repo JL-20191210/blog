@@ -6,7 +6,6 @@ export default navbar([
     text: "后端",
     icon: "code",
     prefix: "/Java/",
-    link: "Java",
     children: [
       {
         text: "Java",
@@ -46,17 +45,37 @@ export default navbar([
     ],
   },
   {
+    text: "SpringCloud",
+    icon: "fa-solid fa-cloud",
+    prefix: "/SpringCloud/",
+    children: [
+      {
+        text: "Nacos",
+        link: "/SpringCloud/Nacos/",
+        icon: "fa-solid fa-cloud",
+        // 激活导航栏
+        activeMatch: "^/SpringCloud/$",
+      },
+    ],
+  },
+  {
     text: "数据库",
     icon: "fa-solid fa-database",
-    prefix: "/MySQL/",
-    link: "MySQL",
+    prefix: "/Database/",
     children: [
       {
         text: "MySQL",
-        link: "README.md",
+        link: "MySQL/",
         icon: "fa-solid fa-database",
         // 仅在 `/zh/guide/` 激活
         activeMatch: "^/MySQL/$",
+      },
+      {
+        text: "Redis",
+        link: "Redis/",
+        icon: "fa-solid fa-server",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/Redis/$",
       },
     ],
   },

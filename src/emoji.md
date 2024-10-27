@@ -1,6 +1,6 @@
 ---
 icon: fa-solid fa-icons
-date: 2024/10/27 22:40:52
+date: 2024-10-27
 category:
   - markdown
 tag:
