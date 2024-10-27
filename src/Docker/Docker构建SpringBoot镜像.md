@@ -2,7 +2,7 @@
 
 ## 1. 什么是 Dockerfile ?
 
-![img](G:\develop\VsCodeProj\my-docs\src\Docker\Docker构建SpringBoot镜像.assets\202410271510023.jpeg)
+![img](Docker构建SpringBoot镜像.assets\202410271510023.jpeg)
 
 Dockerfile 是用于构建 Docker 镜像的文本文件，其中包含了一系列的指令，每个指令对应着镜像构建过程中的一步操作。通过 Dockerfile，开发者可以定义镜像中包含的文件、环境变量、运行命令等配置。
 
