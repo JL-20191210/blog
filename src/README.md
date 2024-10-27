@@ -7,7 +7,7 @@ heroImage: ""
 heroText: 小满
 heroFullScreen: true
 tagline: 何须多虑盈亏事,终归小满胜万全
-bgImage: "https://api.likepoems.com/img/bing/"
+bgImage: "https://bing.img.run/uhd.php"
 projects:
   - icon: project
     name: 项目名称
