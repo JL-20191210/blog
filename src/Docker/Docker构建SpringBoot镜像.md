@@ -1,6 +1,8 @@
+# Docker构建SpringBoot镜像
+
 ## 1. 什么是 Dockerfile ?
 
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410271510023.jpeg)
+![img](G:\develop\VsCodeProj\my-docs\src\Docker\Docker构建SpringBoot镜像.assets\202410271510023.jpeg)
 
 Dockerfile 是用于构建 Docker 镜像的文本文件，其中包含了一系列的指令，每个指令对应着镜像构建过程中的一步操作。通过 Dockerfile，开发者可以定义镜像中包含的文件、环境变量、运行命令等配置。
 
@@ -8,7 +10,7 @@ Dockerfile 是用于构建 Docker 镜像的文本文件，其中包含了一系�
 
 在 `weblog-web` 入口模块下，创建一个名为 `Dockerfile` 的文件：
 
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410271510987.jpeg)
+![img](Docker构建SpringBoot镜像.assets\202410271510987.jpeg)
 
 内容如下：
 
@@ -59,7 +61,7 @@ CMD java ${JAVA_OPTS} -jar app.jar $ARGS
 chmod +x Dockerfile
 ```
 
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410271510390.jpeg)
+![img](Docker构建SpringBoot镜像.assets\202410271510390.jpeg)
 
 接着，执行如下构建镜像命令：
 
@@ -83,11 +85,11 @@ docker build -t weblog-web:0.0.1-SNAPSHOT .
 
 注意：别遗漏了命令最后的点 `.`
 
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410271510777.jpeg)
+![img](Docker构建SpringBoot镜像.assets\202410271510777.jpeg)
 
 镜像构建完成后，可以通过 `docker images` 来确认一下本地是否存在该镜像：
 
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410271510945.jpeg)
+![img](Docker构建SpringBoot镜像.assets\202410271510945.jpeg)
 
 ## 4. 运行容器
 
@@ -133,6 +135,6 @@ docker run --restart=always -d -p 8080:8080 -e "ARGS=--spring.profiles.active=pr
 
 执行完成后，通过 `docker ps` 来查看正在运行中的容器，不出意外就能看到 `weblog-web` 这个容器了。同时，通过 `tail -f` 来查看 `/app/weblog/logs` 中的日志，以及网站运行情况，确认以容器运行的服务是正常的。
 
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410271510883.jpeg)
+![img](Docker构建SpringBoot镜像.assets\202410271510883.jpeg)
 
 至此，我们就搞定了通过 `Dockerfile` 来构建 `Spring Boot` 镜像，以及通过镜像成功运行起了后端服务。
