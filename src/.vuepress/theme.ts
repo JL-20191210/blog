@@ -35,7 +35,7 @@ export default hopeTheme({
 
   // 博客相关
   blog: {
-    description: "一个全栈攻城狮",
+    description: "一个全干攻城狮",
     intro: "/intro.html",
     medias: {
       Gitee: "https://example.com",
