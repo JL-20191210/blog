@@ -1,3 +1,10 @@
+icon: pen-to-square
+date: 2024-11-14
+category:
+  - Spring
+tag:
+  - 总结
+---
 # @ControllerAdvice
 
 ## 1. 概述
@@ -5,7 +12,7 @@
 > `@ControllerAdvice`，是Spring3.2提供的新注解，它是一个Controller增强器，可对controller进行增强处理。
 >
 > `@ControllerAdvice`注解将作用在所有`Controller层`的方法上
-
+<!-- more -->
 ### 实现
 
 ```java

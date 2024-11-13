@@ -1,9 +1,16 @@
+icon: pen-to-square
+date: 2024-11-14
+category:
+  - Spring
+tag:
+  - 总结
+---
 # @ResponseBody
 
 > 使用在使用在控制层（controller）的方法上。
 >
 > 是组成`@RestController`的分子
-
+<!-- more -->
 ### 1. 实现
 
 ```java
