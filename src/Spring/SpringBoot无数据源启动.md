@@ -1,3 +1,11 @@
+---
+icon: pen-to-square
+date: 2024-11-14
+category:
+  - Spring
+tag:
+  - 总结
+---
 # Spring Boot无数据源启动
 
 

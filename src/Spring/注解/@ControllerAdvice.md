@@ -1,9 +1,10 @@
+---
 icon: pen-to-square
 date: 2024-11-14
 category:
   - Spring
 tag:
-  - 总结
+  - 注解
 ---
 # @ControllerAdvice
 
@@ -102,4 +103,134 @@ public class GulimallExceptionControllerAdvice {
 
 ### 3.2 预设全局数据
 
+> 配合`@ModelAttribute`注解,实现全局数据绑定
+>
+> 使用` @ModelAttribute `注解标记该方法的返回数据是一个全局数据，默认情况下，这个全局数据的 key 就是返回的变量名，value 就是方法返回值，也可以通过`@ModelAttribute("myMap")`重新指定 key为myMap。
+>
+> 供所有Controller中注有`@RequestMapping`的方法使用
+
+#### 3.2.1 ` @ModelAttribute` 实现
+
+```java
+@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface ModelAttribute {
+    @AliasFor("name")
+    String value() default "";
+
+    @AliasFor("value")
+    String name() default "";
+
+    boolean binding() default true;
+}
+```
+
+- 作用范围：参数和方法
+- 生命周期：始终不丢弃
+
+#### 3.2.2 绑定值
+
+```java
+@ControllerAdvice
+public class MyGlobalHandler {
+    
+    /** 方式一 **/
+    @ModelAttribute
+    public void presetParam(Model model){
+        model.addAttribute("globalAttr","this is a global param");
+    }
+
+    /** 方式二 **/
+    @ModelAttribute()
+    public Map<String, String> presetParam(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("key1", "map默认获取方式是modelMap.get(\"map\")");
+        map.put("key2", "value2");
+        map.put("key3", "value3");
+        return map;
+    }
+
+    /** 方式三 **/
+    @ModelAttribute("myMap")
+    public Map<String, String> presetParam1(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("key1", "map自定义获取方式是modelMap.get(\"myMap\")");
+        map.put("key2", "value2");
+        map.put("key3", "value3");
+        return map;
+    }
+}
+```
+
+**方式一**
+
+直接加入变量名和变量值。直接通过变量名获取变量值
+
+**方式二**
+
+将变量名和变量值放在map中。使用时先获取map，再从map中通过变量名获取变量值 
+
+**方式三**
+
+自定义属性的key值为myMap
+
+😪 `:sleepy:`
+
+- 当` @ModelAttribute() `不传任何参数的时候，默认会把返回值的字符串值作为key，方式二的key是map（不支持字符串的返回值作为key）
+- 当 `@ModelAttribute("myMap") `传参数的时候，则以参数值作为key，方式三 key 则是 myMap。
+  
+
+#### 3.2.3 获取全局数据
+
+```java
+@RestController
+@RequestMapping("/global")
+public class AdviceController {
+
+    /** 获取全局绑定数据 **/
+
+    @GetMapping("/param1")
+    public String getGlobalParam1(Model model){
+        Map<String, Object> modelMap = model.asMap();
+        return (String) modelMap.get("globalAttr");
+    }
+
+    @GetMapping("/param2")
+    public String getGlobalParam2(@ModelAttribute("globalAttr") String globalAttr){
+        return globalAttr;
+    }
+
+    @GetMapping("/param3")
+    public String getGlobalParam3(ModelMap modelMap){
+        return (String)modelMap.get("globalAttr");
+    }
+
+    @GetMapping("/param4")
+    public Map getGlobalParam4(Model model){
+        Map<String, Object> modelMap = model.asMap();
+        Map<String,String> map  = (Map) modelMap.get("map");
+        return map;
+    }
+
+    @GetMapping("/param5")
+    public String getGlobalParam5(@ModelAttribute("map") Map<String,String> map){
+        return  map.get("key1");
+    }
+
+    @GetMapping("/param6")
+    public Map getGlobalParam6(ModelMap modelMap){
+        return (Map) modelMap.get("map");
+    }
+
+    @GetMapping("/param7")
+    public Map getGlobalParam7(ModelMap modelMap){
+        return (Map) modelMap.get("myMap");
+    }
+}
+```
+
 ### 3.3 请求参数预处理
+
+#### 3.3.1 `@InitBinder`实现
+
