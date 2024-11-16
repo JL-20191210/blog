@@ -1,8 +1,19 @@
+---
+icon: fa-solid fa-cloud
+date: 2024-10-29
+category:
+  - Nacos
+tag:
+  - 总结
+order: 2
+---
 # 阿里云oss使用记录
 
 ## 原生SDK使用
 
 **product模块导入依赖**
+
+<!-- more -->
 
 ```xml
 <!--  阿里云OSS存储原生SDK-->
