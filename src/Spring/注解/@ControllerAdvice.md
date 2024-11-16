@@ -232,5 +232,6 @@ public class AdviceController {
 
 ### 3.3 请求参数预处理
 
-#### 3.3.1 `@InitBinder`实现
+#### 3.3.1 `@InitBinder`
 
+> 很少用到，不总结
