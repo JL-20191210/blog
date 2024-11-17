@@ -54,7 +54,7 @@ init-connect='SET NAMES utf8'
 - 查看管理密码的变量：mysql>SHOW VARIABLES LIKE 'validate_password%';
 - ![img](MySQL8.0安装.assets\1683041925046-01ef7836-3f60-48e2-bfd7-88e265cf6002.png)
 - VARIABLES n.变量
-- 修改变量：mysql>set global validate_password_policy=LOW;
+- 修改变量：mysql>set global validate_password.policy=LOW;
 - 其他变量也可自定义
 - ![img](MySQL8.0安装.assets\1683042108511-6c5474fb-3ce6-426e-b31c-8130c7385b22.png)
 
