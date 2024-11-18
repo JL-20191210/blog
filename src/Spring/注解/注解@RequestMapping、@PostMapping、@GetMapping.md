@@ -1,3 +1,11 @@
+---
+icon: fa-solid fa-hashtag
+date: 2024-11-14
+category:
+  - Spring
+tag:
+  - 注解
+---
 # 注解@RequestMapping、@PostMapping、@GetMapping
 
 > `@RequestMapping`、`@PostMapping`和`@GetMapping`是三个非常常用的注解，用于处理[HTTP请求](https://so.csdn.net/so/search?q=HTTP请求&spm=1001.2101.3001.7020)映射。

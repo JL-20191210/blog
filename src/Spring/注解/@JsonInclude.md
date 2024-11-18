@@ -1,3 +1,11 @@
+---
+icon: fa-solid fa-hashtag
+date: 2024-11-17
+category:
+  - Spring
+tag:
+  - 注解
+---
 # @JsonInclude
 
 > `@JsonInclude(JsonInclude.Include.NON_EMPTY)`
