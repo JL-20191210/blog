@@ -5,7 +5,7 @@ date: 2024-10-17
 category:
   - docker
 tag:
-  - 经验
+  - 镜像
 ---
 # Docker构建SpringBoot镜像
 
