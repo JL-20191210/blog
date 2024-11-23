@@ -9,6 +9,8 @@ tag:
 ---
 # 安装Nginx
 
+<!-- more -->
+
 ```bash
 docker run -d \ 
 -p 80:80 \ 
