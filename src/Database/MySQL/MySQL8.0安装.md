@@ -7,6 +7,7 @@ tag:
   - 经验
 ---
 # MySQL8.0安装
+## 普通安装
 ### 获取源安装包
 
 - 确定当前linux系统内核版本：[root@localhost ~]# cat /etc/redhat-release
@@ -76,3 +77,39 @@ init-connect='SET NAMES utf8'
 修改为所有用户可访问：mysql> update user set host = '%' where user ='root';
 
 - 重启MySQL：[root@localhost ~]# systemctl restart mysqld
+## Docker安装
+> 在Docker中安装MySQL 8.0并将容器的数据目录映射到本地主机，并设置容器的重启策略为“始终重启”：
+
+### **拉取MySQL 8.0镜像**：
+   运行以下命令来从Docker Hub上拉取MySQL 8.0镜像：
+
+   ```bash
+   docker pull mysql:8.0
+   ```
+
+### **创建并运行MySQL容器并映射数据目录**：
+   运行以下命令来创建并运行一个MySQL容器，并将容器内的 `/var/lib/mysql` 数据目录映射到本地主机的一个目录（例如 `/path/to/your/mysql/data`），同时设置重启策略为“始终重启”：
+
+   ```bash
+   docker run --name mysql \
+   -d \
+   -p 3306:3306 \
+   --restart always \
+   -v /datavol/docker/mysql/log:/var/log/mysql \
+   -v /datavol/docker/mysql/data:/var/lib/mysql \
+   -v /datavol/docker/mysql/conf:/etc/mysql/conf.d \
+   -e MYSQL_ROOT_PASSWORD=123456 \
+   mysql:8.0
+   ```
+
+### **连接到MySQL容器**：
+   使用以下命令连接到MySQL容器：
+
+   ```bash
+   docker exec -it mysql-container mysql -uroot -p
+   ```
+
+### **管理MySQL容器**：
+   - 停止容器：`docker stop mysql-container`
+   - 重新启动容器：`docker start mysql-container`
+   - 删除容器：`docker rm mysql-container`
