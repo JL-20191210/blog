@@ -1,3 +1,11 @@
+---
+icon: mybatis plus
+date: 2024-11-26
+category:
+  - Mybatis
+tag:
+  - 查询
+---
 # wrapper.and()
 
 在 **MyBatis-Plus** 中，`wrapper.and` 是用来添加分组条件的，它的主要作用是将多个条件逻辑分组，以便生成带括号的 SQL 语句。
