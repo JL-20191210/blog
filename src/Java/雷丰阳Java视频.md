@@ -1,0 +1,14 @@
+---
+icon: pen-to-square
+date: 2024-12-03
+category:
+  - Java
+tag:
+  - Java8特性
+---
+
+# 雷丰阳Java
+<a href='https://api.bilibili.com/x/web-interface/wbi/view?bvid=BV1np4y1C7Yf'>获取视频基本信息</a>
+
+### 学习进度
+<BiliBili aid="267354102" cid="1030691396" page=183 />
