@@ -24,7 +24,7 @@ export default navbar([
       {
         text: "JVM",
         link: "/JVM/README.md",
-        icon: "fa-brands fa-python",
+        icon: "fa-solid fa-microchip",
         // 仅在 `/zh/guide/` 激活
         activeMatch: "^/JVM/$",
       },
