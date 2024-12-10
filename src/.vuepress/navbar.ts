@@ -21,6 +21,13 @@ export default navbar([
         // 仅在 `/zh/guide/` 激活
         activeMatch: "^/Python/$",
       },
+      {
+        text: "JVM",
+        link: "/JVM/README.md",
+        icon: "fa-brands fa-python",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/JVM/$",
+      },
     ],
   },
   {

@@ -26,6 +26,7 @@ export default sidebar({
   ],
   "/Java/":"structure" ,
   "/Python/":"structure",
+  "/JVM/":"structure",
   "/Vue/":"structure",
   "/Spring/":"structure",
   "/SpringCloud/":"structure",
