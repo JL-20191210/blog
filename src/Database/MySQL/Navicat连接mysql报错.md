@@ -4,7 +4,7 @@ date: 2024-10-17
 category:
   - MySQL
 tag:
-  - 经验
+  - 踩坑
 ---
 # Navicat连接mysql报错
 ```shell

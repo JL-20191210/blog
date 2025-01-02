@@ -4,7 +4,7 @@ date: 2024-10-17
 category:
   - MySQL
 tag:
-  - 经验
+  - 踩坑
 ---
 # mysql -uroot -p报错
 >使用xshell登录MySQL时,`mysql -uroot -p`报错Can't connect to local MySQL server through socket '/tmp/mysql.sock' 

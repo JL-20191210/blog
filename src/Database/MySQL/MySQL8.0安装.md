@@ -4,7 +4,7 @@ date: 2024-11-16
 category:
   - MySQL
 tag:
-  - 经验
+  - 安装
 ---
 # MySQL8.0安装
 ## 普通安装

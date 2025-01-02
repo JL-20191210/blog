@@ -1,7 +1,17 @@
+---
+icon: pen-to-square
+date: 2025-01-02
+category:
+  - MySQL
+tag:
+  - 踩坑
+---
+
 # caching_sha2_password无法加载
 
 > 错误信息：“2059 - Authentication plugin 'caching_sha2_password' cannot be loaded”。这个问题通常是由于MySQL 8.0默认使用了`caching_sha2_password`身份验证插件而导致的。该插件需要相关的共享库文件来正常工作，但如果这些文件缺失或无法加载，就会导致身份验证插件无法正确加载，从而导致错误的出现。
 
+<!-- more -->
 **解决方法**：
 
 1. **更改MySQL身份验证插件**：
