@@ -1,5 +1,5 @@
 ---
-icon: fa-java
+icon: fa-brands fa-java
 date: 2024-11-05
 category:
   - Java
