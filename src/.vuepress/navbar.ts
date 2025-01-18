@@ -63,6 +63,13 @@ export default navbar([
         // 激活导航栏
         activeMatch: "^/SpringCloud/$",
       },
+      {
+        text: "Nacos",
+        link: "/SpringCloud/ES/",
+        icon: "fa-brands fa-searchengin",
+        // 激活导航栏
+        activeMatch: "^/SpringCloud/$",
+      },
     ],
   },
   {
