@@ -1939,60 +1939,6 @@
         }
       }
     },
-    "@vuepress/plugin-search": {
-      "version": "2.0.0-rc.73",
-      "resolved": "https://registry.npmmirror.com/@vuepress/plugin-search/-/plugin-search-2.0.0-rc.73.tgz",
-      "integrity": "sha512-L8tE60tKRRL7/hgiG5Tx6KIfOlax4Xez8vp6kQ6UUKQFNzMirMUVO5AQ2ewV2VpzhbtLo3Tvpd66EqbeHRqp2A==",
-      "dev": true,
-      "requires": {
-        "@vuepress/helper": "2.0.0-rc.73",
-        "chokidar": "^3.6.0",
-        "vue": "^3.5.13"
-      },
-      "dependencies": {
-        "@vuepress/helper": {
-          "version": "2.0.0-rc.73",
-          "resolved": "https://registry.npmmirror.com/@vuepress/helper/-/helper-2.0.0-rc.73.tgz",
-          "integrity": "sha512-Jvj5Deg59M8wZXRk6Ax4PLV8mNPK2k9XlPfPUAvb8/PQjYa270CJAdH2CIeXkh9ujPcVlO0Ie9eBXRPaGwfszw==",
-          "dev": true,
-          "requires": {
-            "@vue/shared": "^3.5.13",
-            "@vueuse/core": "^12.4.0",
-            "cheerio": "1.0.0",
-            "fflate": "^0.8.2",
-            "gray-matter": "^4.0.3",
-            "vue": "^3.5.13"
-          }
-        },
-        "@vueuse/core": {
-          "version": "12.4.0",
-          "resolved": "https://registry.npmmirror.com/@vueuse/core/-/core-12.4.0.tgz",
-          "integrity": "sha512-XnjQYcJwCsyXyIafyA6SvyN/OBtfPnjvJmbxNxQjCcyWD198urwm5TYvIUUyAxEAN0K7HJggOgT15cOlWFyLeA==",
-          "dev": true,
-          "requires": {
-            "@types/web-bluetooth": "^0.0.20",
-            "@vueuse/metadata": "12.4.0",
-            "@vueuse/shared": "12.4.0",
-            "vue": "^3.5.13"
-          }
-        },
-        "@vueuse/metadata": {
-          "version": "12.4.0",
-          "resolved": "https://registry.npmmirror.com/@vueuse/metadata/-/metadata-12.4.0.tgz",
-          "integrity": "sha512-AhPuHs/qtYrKHUlEoNO6zCXufu8OgbR8S/n2oMw1OQuBQJ3+HOLQ+EpvXs+feOlZMa0p8QVvDWNlmcJJY8rW2g==",
-          "dev": true
-        },
-        "@vueuse/shared": {
-          "version": "12.4.0",
-          "resolved": "https://registry.npmmirror.com/@vueuse/shared/-/shared-12.4.0.tgz",
-          "integrity": "sha512-9yLgbHVIF12OSCojnjTIoZL1+UA10+O4E1aD6Hpfo/DKVm5o3SZIwz6CupqGy3+IcKI8d6Jnl26EQj/YucnW0Q==",
-          "dev": true,
-          "requires": {
-            "vue": "^3.5.13"
-          }
-        }
-      }
-    },
     "@vuepress/plugin-seo": {
       "version": "2.0.0-rc.52",
       "resolved": "https://registry.npmmirror.com/@vuepress/plugin-seo/-/plugin-seo-2.0.0-rc.52.tgz",
