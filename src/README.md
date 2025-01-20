@@ -7,7 +7,8 @@ heroImage: ""
 heroText: 小满
 heroFullScreen: true
 tagline: 何须多虑盈亏事,终归小满胜万全
-bgImage: "https://bing.img.run/uhd.php"
+# bgImage: "https://bing.img.run/uhd.php"
+bgImage: "https://api.xsot.cn/bing?jump=true"
 projects:
   - icon: project
     name: 项目名称
