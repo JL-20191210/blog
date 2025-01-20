@@ -108,6 +108,9 @@ export default hopeTheme({
       alert: true
     },
 
+    //开启本地搜索功能
+    search: true,
+
     // markdownMath: {
     //   // 启用前安装 katex
     //   type: "katex",
