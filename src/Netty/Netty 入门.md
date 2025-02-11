@@ -451,7 +451,9 @@ static void invokeChannelRead(final AbstractChannelHandlerContext next, Object m
 * 如果两个 handler 绑定的是同一个线程，那么就直接调用
 * 否则，把要调用的代码封装为一个任务对象，由下一个 handler 的线程来调用
 
-
+> 如果当前handler的线程和下一个handler的线程是同一个，直接往下执行
+>
+> 如果不是，则将需要执行的代码作为任务提交给负责下一个handler的EventLoop线程
 
 #### 演示 NioEventLoop 处理普通任务
 
