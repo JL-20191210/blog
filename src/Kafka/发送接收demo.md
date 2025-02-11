@@ -1,3 +1,12 @@
+---
+icon: fa-brands fa-chart-network
+date: 2024-11-05
+category:
+  - 中间件
+tag:
+  - 命令
+---
+# Kafka 发送和接收消息
 要在两台服务器之间通过 Kafka 发送和接收消息，你需要确保以下条件满足：
 
 1. **Kafka 集群已正确配置并运行**：Kafka 集群需要在两台服务器上正确配置，并且能够互相通信。
@@ -66,8 +75,9 @@ Another message from Server A.
    - 确保两台服务器的防火墙允许 Kafka broker 端口（默认 `9092`）和 Zookeeper 端口（默认 `2181`）的通信。
 
 3. **Topic 创建**：
+   
    - 如果 topic 不存在，可以在服务器 A 或服务器 B 上运行以下命令创建 topic：
-
+   
      ```bash
      /path/to/kafka/bin/kafka-topics.sh --create --bootstrap-server 192.168.1.100:9092 --replication-factor 1 --partitions 1 --topic test-topic
      ```
