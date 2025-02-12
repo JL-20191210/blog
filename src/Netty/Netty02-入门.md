@@ -1,6 +1,12 @@
+---
+icon: pen-to-square
+date: 2025-02-12
+category:
+  - Netty
+tag:
+  - 教程
+---
 # 二. Netty 入门
-
-
 
 ## 1. 概述
 
@@ -13,7 +19,7 @@ for rapid development of maintainable high performance protocol servers & client
 
 Netty 是一个异步的、基于事件驱动的网络应用框架，用于快速开发可维护、高性能的网络服务器和客户端
 
-
+<!-- more -->
 
 ### 1.2 Netty 的作者
 
@@ -591,6 +597,10 @@ channelFuture.addListener((ChannelFutureListener) future -> {
 
 * 执行到 1 时，连接未建立，打印 `[id: 0x749124ba]`
 * ChannelFutureListener 会在连接建立时被调用（其中 operationComplete 方法），因此执行到 2 时，连接肯定建立了，打印 `[id: 0x749124ba, L:/127.0.0.1:57351 - R:/127.0.0.1:8080]`
+
+> [!important]
+>
+> main线程让其他线程去接上水管，使用channelFuture.sync()就是等待其他线程接上水管后再放水。不使用就是不等其他线程接上水管就放水，水肯定就撒了。
 
 
 
