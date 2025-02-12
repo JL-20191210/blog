@@ -13,43 +13,43 @@ tag:
 <!-- more -->
 ### 主要方法
 
-1. **submit(Callable<T> task)**:
+1. **`submit(Callable<T> task)`**:
    - 提交一个 `Callable` 任务，并返回一个 `Future<T>` 对象，表示该任务的异步执行结果。
    - 任务会在后台线程池中执行，调用 `Future.get()` 可以获取任务的结果。
 
-2. **submit(Runnable task)**:
+2. **`submit(Runnable task)`**:
    - 提交一个 `Runnable` 任务，并返回一个 `Future<?>` 对象，表示该任务的异步执行状态。
    - 任务会在后台线程池中执行，调用 `Future.get()` 可以获取任务的完成状态。
 
-3. **invokeAll(Collection<? extends Callable<T>> tasks)**:
+3. **`invokeAll(Collection<? extends Callable<T>> tasks)`**:
    - 提交一组 `Callable` 任务，并返回一个包含每个任务执行结果的 `List<Future<T>>`。
    - 所有任务会在后台线程池中执行，且任务按提交顺序等待执行。
 
-4. **invokeAny(Collection<? extends Callable<T>> tasks)**:
+4. **`invokeAny(Collection<? extends Callable<T>> tasks)`**:
    - 提交一组 `Callable` 任务并返回执行完成的第一个任务的结果。
    - 如果至少有一个任务成功执行，则返回该任务的结果。如果所有任务都失败，则抛出异常。
 
-5. **shutdown()**:
+5. **`shutdown()`**:
    - 优雅地关闭线程池，停止接受新任务，并且在所有已提交的任务完成后关闭线程池。
    - 该方法不会立即终止已提交任务的执行，已提交任务会在执行完成后关闭。
 
-6. **shutdownNow()**:
+6. **`shutdownNow()`**:
    - 尝试停止所有正在执行的任务，并返回尚未执行的任务列表。
    - 不保证会中断正在执行的任务，通常是通过中断线程来尽可能地停止任务。
 
-7. **isShutdown()**:
+7. **`sShutdown()`**:
    - 返回一个布尔值，表示线程池是否已经关闭（通过调用 `shutdown()` 或 `shutdownNow()`）。
 
-8. **isTerminated()**:
+8. **`isTerminated()`**:
    - 返回一个布尔值，表示线程池中的所有任务是否都已经完成。
 
-9. **awaitTermination(long timeout, TimeUnit unit)**:
+9. **`awaitTermination(long timeout, TimeUnit unit)`**:
    - 在指定的时间内等待所有任务完成。
    - 如果所有任务在超时之前完成，则返回 `true`，否则返回 `false`。
 
 ### 继承自 `Executor` 接口的方法
 
-- **execute(Runnable command)**:
+- **`execute(Runnable command)`**:
   - 提交一个 `Runnable` 任务进行执行。与 `ExecutorService` 中的 `submit` 方法不同，它不会返回 `Future` 对象，且不能获取任务的执行结果。
 
 ### 线程池的特点
@@ -60,8 +60,8 @@ tag:
 
 ### 常用实现类
 
-- **ThreadPoolExecutor**：最常用的线程池实现类，允许详细配置线程池的参数（如核心线程数、最大线程数、空闲线程存活时间等）。
-- **ScheduledThreadPoolExecutor**：支持任务定时执行的线程池实现，能够执行周期性或延迟的任务。
+- **`ThreadPoolExecutor`**：最常用的线程池实现类，允许详细配置线程池的参数（如核心线程数、最大线程数、空闲线程存活时间等）。
+- **`ScheduledThreadPoolExecutor`**：支持任务定时执行的线程池实现，能够执行周期性或延迟的任务。
 
 ### 总结
 
