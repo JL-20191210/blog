@@ -1,12 +1,5 @@
----
-icon: pen-to-square
-date: 2024-10-17
-category:
-  - Netty
-tag:
-  - 教程
----
-# 优化与源码
+# 四. 优化与源码
+
 ## 1. 优化
 
 ### 1.1 扩展序列化算法
@@ -17,8 +10,6 @@ tag:
 * 反序列化时，需要将传入的正文数据还原成 Java 对象，便于处理
 
 目前的代码仅支持 Java 自带的序列化，反序列化机制，核心代码如下
-
-<!-- more -->
 
 ```java
 // 反序列化
@@ -1453,7 +1444,7 @@ protected void run() {
 
 参考下图
 
-<img src="http://blog.xiaoxiongmaococo.com:19000/typora/0032.png"  />
+<img src="img/0032.png"  />
 
 
 
