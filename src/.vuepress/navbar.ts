@@ -70,6 +70,13 @@ export default navbar([
         // 激活导航栏
         activeMatch: "^/SpringCloud/$",
       },
+      {
+        text: "高级篇",
+        link: "/SpringCloud/高级/",
+        icon: "fa-brands fa-web-awesome",
+        // 激活导航栏
+        activeMatch: "^/SpringCloud/$",
+      },
     ],
   },
   {
