@@ -64,7 +64,7 @@ export default navbar([
         activeMatch: "^/SpringCloud/$",
       },
       {
-        text: "Nacos",
+        text: "ES",
         link: "/SpringCloud/ES/",
         icon: "fa-brands fa-searchengin",
         // 激活导航栏
