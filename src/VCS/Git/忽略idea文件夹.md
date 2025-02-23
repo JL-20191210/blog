@@ -1,5 +1,5 @@
 ---
-icon: fa-git-alt
+icon: fa-brands fa-git-alt
 date: 2025-01-07
 category:
   - Git
@@ -7,7 +7,7 @@ tag:
   - 总结
 ---
 
-# 忽略文件夹
+# 忽略.idea文件夹
 
 > 举例：要在 Git 中忽略 `.idea` 文件夹（通常是 JetBrains 系列 IDE 生成的配置文件夹），需要使用 `.gitignore` 文件来指定 Git 不跟踪该文件夹中的文件。
 
