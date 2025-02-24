@@ -8,7 +8,7 @@
 
 ## 1.下载
 
-首先我们要下载seata-server包，地址在[http](http://seata.io/zh-cn/blog/download.html)[://seata.io/zh-cn/blog/download](http://seata.io/zh-cn/blog/download.html)[.](http://seata.io/zh-cn/blog/download.html)[html](http://seata.io/zh-cn/blog/download.html) 
+首先我们要下载seata-server包，[下载地址](http://seata.io/zh-cn/blog/download.html)
 
 当然，课前资料也准备好了：
 
