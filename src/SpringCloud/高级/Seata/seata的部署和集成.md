@@ -1,3 +1,15 @@
+---
+icon: fa-solid fa-web-awesome
+date: 2025-02-25
+category:
+  - SpringCloud高级篇
+tag:
+  - 阅读完毕
+  - 资料
+  - Seata
+  - 工具
+---
+
 # seata的部署和集成
 
 
@@ -14,7 +26,7 @@
 
 ![image-20210622202357640](assets/image-20210622202357640.png)
 
-
+<!-- more -->
 
 ## 2.解压
 
