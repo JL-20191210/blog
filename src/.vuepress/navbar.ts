@@ -142,8 +142,14 @@ export default navbar([
     ],
   },
   {
-    text: "blog",
-    icon: "blog",
-    link: "http://blog.xiaoxiongmaococo.com:92/#/",
+    text: "面试题",
+    icon: "fa-solid fa-book-tanakh",
+    link: "/Interview/",
+    activeMatch: "^/Interview/$",
   },
+  // {
+  //   text: "blog",
+  //   icon: "blog",
+  //   link: "http://blog.xiaoxiongmaococo.com:92/#/",
+  // },
 ]);

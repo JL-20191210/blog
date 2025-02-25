@@ -37,4 +37,5 @@ export default sidebar({
   "/Docker/":"structure",
   "/项目实战/":"structure",
   "/Linux/":"structure",
+  "/Interview/":"structure",
 });
