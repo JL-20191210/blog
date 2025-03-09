@@ -1,3 +1,13 @@
+---
+icon: fa-file-lines
+date: 2025-03-09
+category:
+  - MySQL
+  - 数据库
+tag:
+  - 笔记
+---
+
 # MySQL学习笔记
 
 > [黑马程序员 MySQL数据库入门到精通，从mysql安装到mysql高级、mysql优化全囊括](https://www.bilibili.com/video/BV1Kr4y1i7ru/?share_source=copy_web&vd_source=e43c1de8e41e1499f7f3fdb03fba0eb6)
@@ -10,7 +20,7 @@
 - DML: 数据操作语言，用来对数据库表中的数据进行增删改
 - DQL: 数据查询语言，用来查询数据库中表的记录
 - DCL: 数据控制语言，用来创建数据库用户、控制数据库的控制权限
-
+<!-- more -->
 ### DDL（数据定义语言）
 
 数据定义语言
@@ -1261,7 +1271,7 @@ select count(distinct substring(email, 1, 5)) / count(*) from tb_user;
 
 - 多条件联合查询时，MySQL优化器会评估哪个字段的索引效率更高，会选择该索引完成本次查询
 
-### 设计原则
+### 2.2.6 设计原则
 
 1. 针对于数据量较大，且查询比较频繁的表建立索引
 2. 针对于常作为查询条件（where）、排序（order by）、分组（group by）操作的字段建立索引
@@ -1271,20 +1281,20 @@ select count(distinct substring(email, 1, 5)) / count(*) from tb_user;
 6. 要控制索引的数量，索引并不是多多益善，索引越多，维护索引结构的代价就越大，会影响增删改的效率
 7. 如果索引列不能存储NULL值，请在创建表时使用NOT NULL约束它。当优化器知道每列是否包含NULL值时，它可以更好地确定哪个索引最有效地用于查询
 
-## SQL 优化
+## 2.3 SQL 优化
 
-### 插入数据
+### 2.3.1 插入数据
 
-普通插入：
+**普通插入：**
 
 1. 采用批量插入（一次插入的数据不建议超过1000条）
 2. 手动提交事务
 3. 主键顺序插入
 
-大批量插入：
-如果一次性需要插入大批量数据，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的load指令插入。
+**大批量插入：**
+如果一次性需要插入大批量数据，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的`load`指令插入。
 
-```
+```bash
 # 客户端连接服务端时，加上参数 --local-infile（这一行在bash/cmd界面输入）
 mysql --local-infile -u root -p
 # 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关
@@ -1294,14 +1304,15 @@ select @@local_infile;
 load data local infile '/root/sql1.log' into table 'tb_user' fields terminated by ',' lines terminated by '\n';
 ```
 
-### 主键优化
+### 2.3.2 主键优化
 
 数据组织方式：在InnoDB存储引擎中，表数据都是根据主键顺序组织存放的，这种存储方式的表称为索引组织表（Index organized table, IOT）
 
 页分裂：页可以为空，也可以填充一般，也可以填充100%，每个页包含了2-N行数据（如果一行数据过大，会行溢出），根据主键排列。
+
 页合并：当删除一行记录时，实际上记录并没有被物理删除，只是记录被标记（flaged）为删除并且它的空间变得允许被其他记录声明使用。当页中删除的记录到达 MERGE_THRESHOLD（默认为页的50%），InnoDB会开始寻找最靠近的页（前后）看看是否可以将这两个页合并以优化空间使用。
 
-MERGE_THRESHOLD：合并页的阈值，可以自己设置，在创建表或创建索引时指定
+`MERGE_THRESHOLD`：合并页的阈值，可以自己设置，在创建表或创建索引时指定
 
 > 文字说明不够清晰明了，具体可以看视频里的PPT演示过程：https://www.bilibili.com/video/BV1Kr4y1i7ru?p=90
 
@@ -1312,10 +1323,10 @@ MERGE_THRESHOLD：合并页的阈值，可以自己设置，在创建表或创�
 - 尽量不要使用 UUID 做主键或者是其他的自然主键，如身份证号
 - 业务操作时，避免对主键的修改
 
-### order by优化
+### 2.3.3 order by优化
 
-1. Using filesort：通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区 sort buffer 中完成排序操作，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序
-2. Using index：通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高
+1. `Using filesort`：通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区 sort buffer 中完成排序操作，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序
+2. `Using index`：通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高
 
 如果order by字段全部使用升序排序或者降序排序，则都会走索引，但是如果一个字段升序排序，另一个字段降序排序，则不会走索引，explain的extra信息显示的是`Using index, Using filesort`，如果要优化掉Using filesort，则需要另外再创建一个索引，如：`create index idx_user_age_phone_ad on tb_user(age asc, phone desc);`，此时使用`select id, age, phone from tb_user order by age asc, phone desc;`会全部走索引
 
@@ -1326,14 +1337,18 @@ MERGE_THRESHOLD：合并页的阈值，可以自己设置，在创建表或创�
 - 多字段排序，一个升序一个降序，此时需要注意联合索引在创建时的规则（ASC/DESC）
 - 如果不可避免出现filesort，大数据量排序时，可以适当增大排序缓冲区大小 sort_buffer_size（默认256k）
 
-### group by优化
+### 2.3.4 group by优化
 
 - 在分组操作时，可以通过索引来提高效率
 - 分组操作时，索引的使用也是满足最左前缀法则的
 
 如索引为`idx_user_pro_age_stat`，则句式可以是`select ... where profession order by age`，这样也符合最左前缀法则
 
-### limit优化
+### 2.3.5 limit优化
+
+- 覆盖索引
+
+- 子查询
 
 常见的问题如`limit 2000000, 10`，此时需要 MySQL 排序前2000000条记录，但仅仅返回2000000 - 2000010的记录，其他记录丢弃，查询排序的代价非常大。
 优化方案：一般分页查询时，通过创建覆盖索引能够比较好地提高性能，可以通过覆盖索引加子查询形式进行优化
@@ -1351,28 +1366,28 @@ select id from tb_sku order by id limit 9000000, 10;
 select * from tb_sku as s, (select id from tb_sku order by id limit 9000000, 10) as a where s.id = a.id;
 ```
 
-### count优化
+### 2.3.6 count优化
 
 MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高（前提是不适用where）；
 InnoDB 在执行 count(*) 时，需要把数据一行一行地从引擎里面读出来，然后累计计数。
 优化方案：自己计数，如创建key-value表存储在内存或硬盘，或者是用redis
 
-count的几种用法：
+**count的几种用法：**
 
 - 如果count函数的参数（count里面写的那个字段）不是NULL（字段值不为NULL），累计值就加一，最后返回累计值
 - 用法：count(*)、count(主键)、count(字段)、count(1)
 - count(主键)跟count(*)一样，因为主键不能为空；count(字段)只计算字段值不为NULL的行；count(1)引擎会为每行添加一个1，然后就count这个1，返回结果也跟count(*)一样；count(null)返回0
 
-各种用法的性能：
+**各种用法的性能：**
 
 - count(主键)：InnoDB引擎会遍历整张表，把每行的主键id值都取出来，返回给服务层，服务层拿到主键后，直接按行进行累加（主键不可能为空）
 - count(字段)：没有not null约束的话，InnoDB引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，服务层判断是否为null，不为null，计数累加；有not null约束的话，InnoDB引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，直接按行进行累加
 - count(1)：InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一层，放一个数字 1 进去，直接按行进行累加
 - count(*)：InnoDB 引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行进行累加
 
-按效率排序：count(字段) < count(主键) < count(1) < count(*)，所以尽量使用 count(*)
+按效率排序：`count(字段) < count(主键) < count(1) ≈ count(*)，所以尽量使用 count(*)`
 
-### update优化（避免行锁升级为表锁）
+### 2.3.7 update优化（避免行锁升级为表锁）
 
 InnoDB 的行锁是针对索引加的锁，不是针对记录加的锁，并且该索引不能失效，否则会从行锁升级为表锁。
 
@@ -1380,35 +1395,37 @@ InnoDB 的行锁是针对索引加的锁，不是针对记录加的锁，并且�
 `update student set no = '123' where id = 1;`，这句由于id有主键索引，所以只会锁这一行；
 `update student set no = '123' where name = 'test';`，这句由于name没有索引，所以会把整张表都锁住进行数据更新，解决方法是给name字段添加索引
 
-## 视图/存储过程/触发器
+
+
+## 2.4 视图/存储过程/触发器
 
 ![img](assets\视图等内容的总结.png)
 
-### 视图
+### 2.4.1 视图
 
 视图(View)是一种虚拟存在的表。视图中的数据并不在数据库中实际存在，行和列数据来自定义视图的查询中使用的表，并且是在使用视图时动态生成的。
 
 通俗的讲，视图只保存了查询的SQL逻辑，不保存查询结果。所以我们在创建视图的时候，主要的工作就落在创建这条SQL查询语句上。
 
-#### 语法
+#### 2.4.1.1 语法
 
-创建视图：
-`CREATE [OR REPLACE] VIEW 视图名称(列名列表)】AS SELECT语句[WITH[CASCADED|LOCAL] CHECK OPTION]`
+**创建视图：**
+`CREATE [OR REPLACE] VIEW 视图名称(列名列表) AS SELECT语句 [WITH[CASCADED|LOCAL] CHECK OPTION]`
 
-查询视图：
+**查询视图：**
 查看创建视图语句：`SHOW CRETE VIEW 视图名称;`
-查看视图数据：`查看视图数据:SELECT*FROM 视图名称…;`
+查看视图数据：`查看视图数据:SELECT * FROM 视图名称…;`
 
-修改视图：
+**修改视图：**
 方式一：
-`CREATE [OR REPLACE]VIEW 视图名称(列名列表)AS SELECT语句[WITH[CASCADEDLLOCAL] CHECK OPTION`
+`CREATE [OR REPLACE] VIEW 视图名称(列名列表) AS SELECT语句 [WITH[CASCADEDLLOCAL] CHECK OPTION`
 方式二：
-`ALTER VEW 视图名称(列名列表)AS SELECT语句[WITH[CASCADED|LOCAL]CHECK OPTION]`
+`ALTER VEW 视图名称(列名列表)AS SELECT语句 [WITH[CASCADED|LOCAL] CHECK OPTION]`
 
-删除视图：
-`DROP VIEW [IF EXISTS]视图名称[,视图名称]`
+**删除视图：**
+`DROP VIEW [IF EXISTS] 视图名称 `
 
-```
+```sql
 -- 创建视图
 create or replace view stu_v_1 as select id, name from student where id <= 10;
 
@@ -1421,22 +1438,22 @@ create or replace view stu_v_1 as select id, name, no from student where id <= 1
 alter view stu_v_1 as select id, name from student where id <= 10;
 
 -- 删除视图
-drop view if exists stu_v_1;/*  */
+drop view if exists stu_v_1;
 ```
 
-#### 检查选项
+#### 2.4.1.2 检查选项
 
 **视图的检查选项：**
 
-当使用WITH CHECK OPTION子句创建视图时，MySOL会通过视图检查正在更改的每个行，例如 插入，更新，删除，以使其符合视图的定义。MVSOL允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保持一致性。
+当使用WITH CHECK OPTION子句创建视图时，MySOL会通过视图检查正在更改的每个行，例如 插入，更新，删除，以使其符合视图的定义。MySQL允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保持一致性。
 
 为了确定检查的范围，mysql 提供了两个选项:CASCADED 和 LOCAL，默认值为CASCADED。
 
-**cascaded：**在对创建时含有该字段的视图，插入数据时，该视图依赖的视图都会加上检查，需要**所有条件**都满足才能够插入成功。
+**cascaded：** **级联**。插入数据时，会检查当前视图及当前视图依赖的所有视图，需要**所有条件**（不管依赖的视图有没有加检查选项语句）都满足才能够插入成功。
 
-**local：**在对创建时含有该字段的视图，插入数据时，对于该视图依赖的视图中**含有检查语句的条件**进行检查判断。
+**local：**插入数据时，对于该视图依赖的视图中**含有检查语句的条件**进行检查判断。 
 
-#### 更新及作用
+#### 2.4.1.3 更新及作用
 
 **视图的更新：**
 
@@ -1447,7 +1464,7 @@ drop view if exists stu_v_1;/*  */
 1. 聚合函数或窗口函数(SUM()、MIN()、MAX()、COUNT()等
 2. DISTINCT
 3. GROUP BY
-4. HAVINGA
+4. HAVING
 5. UNION 或者 UNION ALL
 
 **作用：**
@@ -1459,9 +1476,9 @@ drop view if exists stu_v_1;/*  */
 - **数据独立**
   视图可帮助用户屏蔽真实表结构变化带来的影响。
 
-#### 案例
+#### 2.4.1.4 案例
 
-```
+```sql
 -- 1.为了保证数据库表的安全性，开发人员在操作tb_user表时，只能看到的用户的基本字段，屏蔽手机号和邮箱两个字段。
 create view tb user view as select id,name,profession, age,gender,status,createtime from tb_user;
 select *from tb user view;
@@ -1476,7 +1493,7 @@ where s.id = sc.studentid and sc.courseid = c.id;
 select * from tb_stu_course_view;
 ```
 
-### 存储过程
+### 2.4.2 存储过程
 
 存储过程其实就类似 java，c 这种语言，这一部分可以通过文档快速学习，不懂的再回过头看视频。
 
@@ -1490,28 +1507,25 @@ select * from tb_stu_course_view;
 - 可以接收参数，也可以返回数据
 - 减少网络交互，效率提升
 
-#### 基本语法
-
-```
-查看视图数据:SELECT*FROM 视图名称…;
-```
+#### 2.4.2.1 操作
 
 **查看：**
 
-```
-SELECT* FROM INFORMATION SCHEMA.ROUTINES WHERE ROUTINE_SCHEMA='xx';--查询数据库的存储过程及状态信息`
-`SHOW CREATE PROCEDURE 存储过程名称;--查询某个存储过程的定义
+```sql
+SELECT* FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_SCHEMA='xx';--查询xx数据库的存储过程及状态信息
+
+SHOW CREATE PROCEDURE --存储过程名称;查询某个存储过程的定义
 ```
 
 **删除：**
 
-```
+```sql
 DROP PROCEDURE [IF EXISTS]存储过程名称;
 ```
 
-案例：
+**案例**：
 
-```
+```sql
 -- 存储过程基本语法
 -- 创建
 create procedure p1()
@@ -1530,35 +1544,37 @@ show create procedure p1;
 drop procedure if exists p1;
 ```
 
-#### 变量
+#### 2.4.2.2 变量
 
 ##### 系统变量
 
-系统变量 是MySQL服务器提供，不是用户定义的，属于服务器层面。分为全局变量(GLOBAL)、会话变量(SESSION)。
+系统变量 是MySQL服务器提供，不是用户定义的，属于服务器层面。
+
+分为`全局变量(GLOBAL)、会话变量(SESSION)`。
 
 查看系统变量
 
-```
-SHOW [SESSION |GLOBAL] VARIABLES ; --查看所有系统变量`
-`SHOW[SESSION|GLOBAL] VARIABLES LIKE'; --可以通过LKE模糊匹配方式查找变量`
-`SELECT @@[SESSION|GLOBAL]系统变量名; -- 查看指定变量的值
--- 变量：系统变量
+```sql
+SHOW [SESSION |GLOBAL] VARIABLES ; -- 查看所有系统变量
+SHOW[SESSION|GLOBAL] VARIABLES LIKE; -- 可以通过LKE模糊匹配方式查找变量
+SELECT @@[SESSION|GLOBAL]系统变量名; -- 查看指定变量的值
+
 -- 查看系统变量
 show session variables;
 show session variables like 'auto%';
-show glabal variables like 'auto%';
-select @@global.autocommit;
+show glabal variables like 'auto%'; 
+select @@global.autocommit; -- 全局autocommit变量的当前值
 
 -- 设置系统变量
 set session autocommit = 1;
-insert intto course(id, name) values (6, 'ES');
+insert into course(id, name) values (6, 'ES');
 set global auto commit = 0;
 ```
 
 **注意：**
 
 - 如果没有指定 session / global，默认 session，会话变量
-- myesql 服务器重启之后，所设置的全局参数会失效，要想不失效，需要更改/etc/my.cnf 中的配置。
+- MySQL 服务器重启之后，所设置的全局参数会失效，要想不失效，需要更改/etc/my.cnf 中的配置。
 
 ##### 用户定义变量
 
@@ -1566,11 +1582,22 @@ set global auto commit = 0;
 
 **赋值：**
 
-```
-SET @var name = expr [, @var_name = expr]...;`
-`SET @var name := expr [, @var_name := expr]...;
-SELECT @var name := expr , @var name := expr ...;`
-`SELECT 字段名 INTO @var_name FROM 表名;
+```sql
+-- set赋值
+-- 推荐使用 := 操作符进行赋值，因为它是 MySQL 中专用的赋值操作符，更为清晰且一致。
+SET @var_name = expr;
+SET @var_name := expr;
+SET @var1 := 1, @var2 := 'abc'; -- 可以一次性给多个变量赋值，用逗号分隔
+
+-- SELECT ... INTO 语句
+-- 用于动态从数据库中查询并赋值给变量，常用于处理查询结果。
+-- 在存储过程中非常常见，尤其是在读取单行数据并将其存储到变量中时。
+SELECT column_name INTO @var_name FROM table_name WHERE condition;
+
+-- SELECT ... := 语句
+-- SELECT 与 := 结合使用时，允许在查询结果中直接将值赋给变量。这通常用于在查询中直接对多个变量赋值，而不需要将结果存储到表中
+SELECT @var_name := expr FROM table_name WHERE condition;
+
 ```
 
 **使用：**
@@ -1581,14 +1608,16 @@ SELECT @var_name;
 
 案例：
 
-```
+```sql
 -- 变量：用户变量
 -- 赋值
 set @myname = 'itcast';
-set @myage := 10;
+用户定义变量
 
 select @mycolor := 'red';
 select count(*) into @mycount from tb_user;
+
+SELECT @var1 := column1, @var2 := column2 FROM table_name WHERE id = 1;
 
 -- 使用
 select @myname, @myage, @mycolor, @mycount;
@@ -1606,7 +1635,7 @@ select @abc; -- 输出为NULL
 
 **声明：**
 
-```
+```sql
 DECLARE 变量名 变量类型 [DEFAULT..];
 ```
 
@@ -1614,7 +1643,7 @@ DECLARE 变量名 变量类型 [DEFAULT..];
 
 **赋值：**
 
-```
+```sql
 SET 变量名=值;
 SET 变量名:=值;
 SELECT 字段名 INTO 变量名 FROM 表名 ...;
@@ -1622,7 +1651,7 @@ SELECT 字段名 INTO 变量名 FROM 表名 ...;
 
 案例：
 
-```
+```sql
 -- 变量：局部变量
 -- 声明 - declare
 -- 赋值 -
@@ -1636,11 +1665,11 @@ end;
 call p2();
 ```
 
-#### if 判断
+#### 2.4.2.3 if 判断
 
 语法：
 
-```
+```sql
 IF 条件1 THEN
         ...
 ELSEIF 条件2 THEN -- 可选
@@ -1652,7 +1681,7 @@ END IF;
 
 案例：
 
-```
+```sql
 create procedure p3()
 begin
   declare score int default 58;
@@ -1668,7 +1697,7 @@ begin
 end;
 ```
 
-#### 参数（in, out, inout)
+#### 2.4.2.4 参数（in, out, inout)
 
 | 类型  | 含义                                         | 备注 |
 | ----- | -------------------------------------------- | ---- |
@@ -1715,7 +1744,7 @@ call p5(score);
 select @score;
 ```
 
-#### case
+#### 2.4.2.5 case
 
 **语法一：**
 
@@ -1767,7 +1796,7 @@ begin
 end;
 ```
 
-#### 循环
+#### 2.4.2.6 循环
 
 ##### while
 
@@ -1892,7 +1921,7 @@ begin
 end;
 ```
 
-#### 游标-cursor
+#### 2.4.2.7 游标-cursor
 
 游标(CURSOR)是用来存储查询结果集的数据类型,在存储过程和函数中可以使用游标对结果集进行循环的处理。游标的使用包括游标的声明、OPEN、FETCH和 CLOSE，其语法分别如下。
 
@@ -2004,7 +2033,7 @@ begin
 end;
 ```
 
-### 存储函数：
+### 2.4.3 存储函数：
 
 存储函数是有返回值的存储过程，存储函数的参数只能是IN类型的。
 
@@ -2042,7 +2071,7 @@ begin
 end;
 ```
 
-### 触发器
+### 2.4.4 触发器
 
 触发器是与表有关的数据库对象，指在 insert/update/delete 之前或之后，触发并执行触发器中定义的SQL语句集合。触发器的这种特性可以协助应用在数据库端确保数据的完整性，日志记录，数据校验等操作。
 
