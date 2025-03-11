@@ -756,7 +756,7 @@ select e.*, d.* from (select * from employee where entrydate > '2006-01-01') as 
 
 基本操作：
 
-```
+```sql
 -- 1. 查询张三账户余额
 select * from account where name = '张三';
 -- 2. 将张三账户余额-1000
@@ -793,7 +793,7 @@ commit;
 
 操作实例：
 
-```
+```sql
 start transaction;
 select * from account where name = '张三';
 update account set money = money - 1000 where name = '张三';
@@ -818,7 +818,7 @@ commit;
 
 > 这三个问题的详细演示：https://www.bilibili.com/video/BV1Kr4y1i7ru?p=55cd
 
-并发事务隔离级别：
+并发事务隔离级别：h
 
 | 隔离级别              | 脏读 | 不可重复读 | 幻读 |
 | --------------------- | ---- | ---------- | ---- |
