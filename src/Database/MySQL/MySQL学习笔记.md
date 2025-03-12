@@ -1,5 +1,5 @@
 ---
-icon: fa-file-lines
+icon: fa-database
 date: 2025-03-09
 category:
   - MySQL
