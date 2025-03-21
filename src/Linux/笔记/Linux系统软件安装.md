@@ -295,6 +295,9 @@ MySQL的安装我们可以通过前面学习的yum命令进行。
    ```shell
    # yum安装Mysql
    yum -y install mysql-community-server
+   
+   # 禁用 GPG 检查（不推荐，存在安全风险）
+   sudo yum install mysql-server --nogpgcheck
    ```
 
 3. 安装完成后，启动MySQL并配置开机自启动
@@ -397,9 +400,7 @@ MySQL的安装我们可以通过前面学习的yum命令进行。
 
 至此，MySQL就安装完成并可用了，请妥善保存好MySQL的root密码。
 
-
-
-
+:smiling_imp:记得关防火墙
 
 ## MySQL5.7版本在Ubuntu（WSL环境）系统安装
 
