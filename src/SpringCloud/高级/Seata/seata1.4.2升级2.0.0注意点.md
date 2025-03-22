@@ -1,3 +1,13 @@
+---
+icon: fa-solid fa-web-awesome
+date: 2025-02-25
+category:
+  - SpringCloud高级篇
+tag:
+  - Seata
+  - 分布式事务
+  - 微服务
+---
 # seata1.4.2升级2.0.0注意点
 
 1. lock_table中status字段缺失要补上

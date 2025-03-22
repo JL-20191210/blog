@@ -1,3 +1,13 @@
+---
+icon: fa-solid fa-web-awesome
+date: 2025-02-25
+category:
+  - SpringCloud高级篇
+tag:
+  - Seata
+  - 分布式事务
+  - 微服务
+---
 # TC,TM,RM
 
 - **TM（事务管理器）**：在事务开始时负责启动和管理事务生命周期，协调全局事务的进展。

@@ -5,9 +5,10 @@ category:
   - SpringCloud高级篇
 tag:
   - 阅读完毕
-  - 资料
+  - 讲义
   - Seata
-  - 工具
+  - 分布式事务
+  - 微服务
 ---
 
 # seata的部署和集成

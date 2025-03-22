@@ -1,3 +1,11 @@
+---
+icon: fa-solid fa-web-awesome
+date: 2025-02-25
+category:
+  - SpringCloud
+tag:
+  - 事务
+---
 # 事务ACID原则
 
 ACID原则是数据库管理系统中用于保证事务处理正确性的四个基本原则，ACID是以下四个英文单词的首字母缩写：
