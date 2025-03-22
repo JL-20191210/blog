@@ -1,3 +1,13 @@
+---
+icon: pen-to-square
+date: 2024-11-16
+category:
+  - MySQL
+  - Linux
+tag:
+  - 卸载
+---
+
 # MySQL卸载-Linux版
 ## MySQL卸载-Linux版
 
@@ -8,7 +18,7 @@ systemctl stop mysqld
 ```
 
 
-
+<!-- more -->
 查询MySQL的安装文件
 
 ```

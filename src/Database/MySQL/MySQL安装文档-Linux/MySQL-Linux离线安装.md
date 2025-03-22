@@ -1,3 +1,12 @@
+---
+icon: pen-to-square
+date: 2024-11-16
+category:
+  - MySQL
+  - Linux
+tag:
+  - 安装
+---
 # MySQL8.0.26-Linux版离线安装
 ## MySQL8.0.26-Linux版离线安装
 
@@ -8,7 +17,7 @@
 Linux的版本为 CentOS7;
 
 
-
+<!-- more -->
 ### 2. 下载Linux版MySQL安装包
 
 https://downloads.mysql.com/archives/community/
