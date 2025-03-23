@@ -21,12 +21,14 @@ tag:
 
 [2.MySQL进阶篇-完成](./进阶/笔记-进阶篇.md)
 
-[3.MySQL运维篇-在看](./进阶/笔记-进阶篇.md)
+[3.MySQL运维篇-在看](./运维/运维篇.md)
 
 ## MyCat
-[4.MyCat安装文档](./MyCat安装文档/MyCat安装文档.md)
+[1.MyCat安装文档](./MyCat安装文档/MyCat安装文档.md)
 
-[5.MyCat-web安装文档](./MyCat-Web安装文档/MyCat-web安装文档.md)
+[2.MyCat-web安装文档](./MyCat-Web安装文档/MyCat-web安装文档.md)
+
+[3.MyCat配置信息含义](./运维/MyCat配置信息含义.md)
 
 ## 基础
 [1.MySQL数据类型](./基础/MySQL数据类型.md)
