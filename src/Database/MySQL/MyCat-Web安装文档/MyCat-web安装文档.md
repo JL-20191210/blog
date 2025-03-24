@@ -1,5 +1,5 @@
 ---
-icon: fa-solid fa-database
+icon: fa-solid fa-cat
 date: 2025-03-09
 category:
   - MySQL
