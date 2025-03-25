@@ -30,6 +30,12 @@ tag:
 
 [3.MyCat配置信息含义](./运维/MyCat配置信息含义.md)
 
+[4.MyCat配置schema.xml](./MyCat配置文件/schema.md)
+
+[5.MyCat配置server.xml](./MyCat配置文件/server.md)
+
+[6.MyCat配置rule.xml](./MyCat配置文件/rule.md)
+
 ## 基础
 [1.MySQL数据类型](./基础/MySQL数据类型.md)
 
