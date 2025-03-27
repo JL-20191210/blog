@@ -57,5 +57,3 @@ success
 ```
 
 > `Navicat for MySQL`连接远程数据库成功
-
-![img](http://blog.xiaoxiongmaococo.com:19000/typora/202410131601461.png)
