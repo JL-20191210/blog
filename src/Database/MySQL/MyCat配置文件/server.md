@@ -9,7 +9,52 @@ tag:
 ---
 
 # MyCat配置文件server.xml
+
+:joy_cat:注意用户访问权限配置，忘记配置会导致mycat-web连接逻辑库失败
+
+```xml
+<user name="root" defaultAccount="true">
+	<property name="password">123123</property>
+	<property name="schemas">DB01,SHOPPING,ITCAST,ITCAST_RW2</property>
+</user>
+```
+
 <!-- more -->
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mycat:server SYSTEM "server.dtd">
+<mycat:server xmlns:mycat="http://io.mycat/">
+    ...
+    ...
+
+	<user name="root" defaultAccount="true">
+		<property name="password">123123</property>
+		<property name="schemas">DB01,SHOPPING</property>
+	</user>
+	
+	<user name="user">
+		<property name="password">123123</property>
+		<property name="schemas">SHOPPING</property>
+		<property name="readOnly">DB01,true</property>
+	</user>
+
+</mycat:server>
+
+```
+
+
+
+:cat2:开启SQL统计后，mycat-web中的SQL统计界面才会显示数据
+
+```xml
+<property name="useSqlStat">1</property>  <!-- 1为开启实时统计、0为关闭 -->
+```
+
+
+
+## 最终配置
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- - - Licensed under the Apache License, Version 2.0 (the "License"); 
@@ -49,8 +94,7 @@ tag:
 		<!--<property name="frontSocketNoDelay">1</property>-->
 		<!--<property name="processorExecutor">16</property>-->
 		<!--
-			<property name="serverPort">8066</property> 
-			<property name="managerPort">9066</property> 
+			<property name="serverPort">8066</property> <property name="managerPort">9066</property> 
 			<property name="idleTimeout">300000</property> <property name="bindIp">0.0.0.0</property>
 			<property name="dataNodeIdleCheckPeriod">300000</property> 5 * 60 * 1000L; //连接空闲检查
 			<property name="frontWriteQueueSize">4096</property> <property name="processors">32</property> -->
@@ -92,6 +136,7 @@ tag:
 		<property name="strictTxIsolation">false</property>
 		
 		<property name="useZKSwitch">true</property>
+
 		
 	</system>
 	
@@ -113,26 +158,16 @@ tag:
 	-->
 
 	<user name="root" defaultAccount="true">
-		<property name="password">123456</property>
-		<property name="schemas">DB01</property>
-		
-		<!-- 表级 DML 权限设置 -->
-		<!-- 	
-		<privileges check="true">
-			<schema name="DB01" dml="0110" > 
-				<table name="TB_ORDER" dml="1110"></table>
-			</schema>
-		</privileges>		
-		 -->
+		<property name="password">123123</property>
+		<property name="schemas">DB01,SHOPPING,ITCAST,ITCAST_RW2</property>
 	</user>
-
+	
 	<user name="user">
-		<property name="password">123456</property>
-		<property name="schemas">DB01</property>
+		<property name="password">123123</property>
+		<property name="schemas">DB01,SHOPPING,ITCAST,ITCAST_RW2</property>
 		<property name="readOnly">true</property>
 	</user>
-
+	
 </mycat:server>
-
 ```
 

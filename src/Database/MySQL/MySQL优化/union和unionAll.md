@@ -5,6 +5,7 @@ category:
   - MySQL
 tag:
   - 基础
+  - SQL优化
 ---
 
 # `UNION` 和 `UNION ALL`
