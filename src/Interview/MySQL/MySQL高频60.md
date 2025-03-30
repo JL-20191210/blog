@@ -138,7 +138,7 @@ Server 层按顺序执行 SQL 的步骤为：
 ### 14、为什么需要 redo log？ 
 
 -  redo log 主要用于 MySQL 异常重启后的一种数据恢复手段，确保了数据的一致性。 
--  其实是为了配合 MySQL 的 WAL 机制。因为 MySQL 进行更新操作，为了能够快速响应，所以采用了异步写回磁盘的技术，写入内存后就返回。但是这样，会存在 **crash后** 内存数据丢失的隐患，而 redo log 具备 crash safe 的能力。
+-  其实是为了配合 MySQL 的 WAL 机制。因为 MySQL 进行更新操作，为了能够快速响应，所以采用了异步写回磁盘的技术，写入内存后就返回。但是这样，会存在 **crash后（系统崩溃）** 内存数据丢失的隐患，而 redo log 具备 crash safe 的能力。
 
 ### 15、为什么 redo log 具有 crash-safe 的能力，是 binlog 无法替代的？
 
