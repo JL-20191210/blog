@@ -4,6 +4,7 @@ category:
   - 面试题
 tag:
   - 面试题
+  - 低质量
 ---
 
 ## 基础
@@ -171,8 +172,6 @@ redo log包括两部分内容，分别是内存中的**日志缓冲**(redo log b
 
 MySQL 每执行一条 DML 语句，会先把记录写入 **redo log buffer（用户空间）** ，再保存到内核空间的缓冲区 OS-buffer 中，后续某个时间点再一次性将多个操作记录写到 **redo log file（刷盘）** 。这种先写日志，再写磁盘的技术，就是**WAL**。
 
-![](/Users/felix/VsCodeProjects/my-docs/src/Interview/MySQL高频60/assets/mysql-f901a97f-9d82-4d4e-a5be-559a64b3d9b8-20250327145446188.png)
-
 
 可以发现，redo log buffer写入到redo log file，是经过OS buffer中转的。其实可以通过参数innodb_flush_log_at_trx_commit进行配置，参数值含义如下： 
 
@@ -187,8 +186,6 @@ MySQL 每执行一条 DML 语句，会先把记录写入 **redo log buffer（用
 ```
 update T set a =1 where id =666
 ```
-
-![](/Users/felix/VsCodeProjects/my-docs/src/Interview/MySQL高频60/assets/mysql-43fe6587-0cb8-49aa-bd93-0119e46430d7-20250327145446168.png)
 
 
 1.  MySQL 客户端将请求语句 update T set a =1 where id =666，发往 MySQL Server 层。 
