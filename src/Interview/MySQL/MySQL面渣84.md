@@ -758,7 +758,7 @@ binlog 在服务层，负责记录 SQL 语句的变化。它记录了所有对�
 
 第六步，存储引擎负责查询数据，并将执行结果返回给客户端。客户端接收到查询结果，完成这次查询请求。
 
-### :walking_man: :walking_man: :walking_man: 22.一条更新语句是如何执行的？
+### 22.一条更新语句是如何执行的？
 
 总的来说，一条 UPDATE 语句的执行过程包括读取数据页、加锁解锁、事务提交、日志记录等多个步骤。
 
@@ -766,7 +766,7 @@ binlog 在服务层，负责记录 SQL 语句的变化。它记录了所有对�
 
 拿 `update test set a=1 where id=2` 举例来说：
 
-在事务开始前，MySQL 需要记录undo log，用于事务回滚。
+在**事务开始前**，MySQL 需要记录undo log，用于事务回滚。
 
 操作|id|旧值|新值
 ---|---|---|---
@@ -784,29 +784,31 @@ update|2|N|1
 
 注意，redo log 的写入有两个阶段的提交，一是 binlog 写入之前`prepare` 状态的写入，二是 binlog 写入之后 `commit` 状态的写入。
 
-memo：2025 年 3 月 9 日修改至此。
-
 ### 23.说说 MySQL 的段区页行（补充）
-
-> 2024 年 04 月 26 日增补
 
 推荐阅读：[了解 MySQL的数据行、行溢出机制吗？](https://www.cnblogs.com/ZhuChangwu/p/14035330.html)
 
 MySQL 是以表的形式存储数据的，而表空间的结构则由段、区、页、行组成。
 
-![不要迷恋发哥：段、区、页、行](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240515110034.png)
+:star:**段**是逻辑上存储的单位，包含多个**区**，每个**区**包含多个**页**，而每个**页**包含多个**行**数据。
+
+![不要迷恋发哥：段、区、页、行](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011004538.png)
 
 ①、段：表空间由多个段组成，常见的段有数据段、索引段、回滚段等。
 
-创建索引时会创建两个段，数据段和索引段，数据段用来存储叶子节点中的数据；索引段用来存储非叶子节点的数据。
+- **段**是表空间中用于存储特定类型数据的逻辑单位。例如，有数据段、索引段、回滚段等。
+- 在 InnoDB 中，每个段由多个区组成，不同的段承担不同的存储任务：
+  - **数据段（Data Segment）**：用于存储表的实际数据。
+  - **索引段（Index Segment）**：用于存储表的索引。
+  - **回滚段（Rollback Segment）**：用于存储事务的回滚信息，确保事务的原子性。
 
-回滚段包含了事务执行过程中用于数据回滚的旧数据。
+段在存储引擎中**并不是直接对应物理文件**，而是一个逻辑的划分，用于管理数据库文件中的空间。
 
-②、区：段由一个或多个区组成，区是一组连续的页，通常包含 64 个连续的页，也就是 1M 的数据。
+②、区：段由一个或多个区组成，区是一组**连续的页**，通常包含 64 个连续的页，也就是 1M 的数据。
 
 使用区而非单独的页进行数据分配可以优化磁盘操作，减少磁盘寻道时间，特别是在大量数据进行读写时。
 
-③、页：页是 InnoDB 存储数据的基本单元，标准大小为 16 KB，索引树上的一个节点就是一个页。
+③、页：页是 InnoDB **存储数据的基本单元**，标准大小为 16 KB，索引树上的一个节点就是一个页。
 
 也就意味着数据库每次读写都是以 16 KB 为单位的，一次最少从磁盘中读取 16KB 的数据到内存，一次最少写入 16KB 的数据到磁盘。
 
@@ -816,29 +818,27 @@ MySQL 8.0 默认的行格式是 DYNAMIC，由COMPACT 演变而来，意味着这
 
 可以通过 `show table status like '%article%'` 查看行格式。
 
-![二哥的 Java 进阶之路：行格式](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240515123301.png)
-
-<MZNXQRcodeBanner />    
+![二哥的 Java 进阶之路：行格式](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011020491.png)
 
 ## 存储引擎
 
-### 24.MySQL 有哪些常见存储引擎？
+### :fire:24.MySQL 有哪些常见存储引擎？
 
 MySQL 支持多种存储引擎，常见的有 MyISAM、InnoDB、MEMORY 等。
 
 ---这部分是帮助大家理解 start，面试中可不背---
 
-![二哥的 Java 进阶之路：存储引擎](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240408073338.png)
+![二哥的 Java 进阶之路：存储引擎](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011021569.png)
 
 我来做一个表格对比：
 
-| 功能          | InnoDB | MyISAM | MEMORY |
-| ------------- | ------ | ------ | ------ |
-| 支持事务      | Yes    | No     | No     |
-| 支持全文索引  | Yes    | Yes    | No     |
-| 支持 B+树索引 | Yes    | Yes    | Yes    |
-| 支持哈希索引  | Yes    | No     | Yes    |
-| 支持外键      | Yes    | No     | No     |
+| 功能          | **InnoDB** | MyISAM | MEMORY(Hash) |
+| ------------- | ---------- | ------ | ------------ |
+| **支持事务**  | Yes        | No     | No           |
+| 支持全文索引  | Yes        | Yes    | No           |
+| 支持 B+树索引 | Yes        | Yes    | Yes          |
+| 支持哈希索引  | Yes        | No     | Yes          |
+| **支持外键**  | Yes        | No     | No           |
 
 ---这部分是帮助大家理解 end，面试中可不背---
 
@@ -852,7 +852,7 @@ MySQL 支持多种存储引擎，常见的有 MyISAM、InnoDB、MEMORY 等。
 
 ④、InnoDB 的最小表空间略小于 10M，最大表空间取决于页面大小。
 
-![MySQL 官网：innodb-limits.html](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240408074630.png)
+![MySQL 官网：innodb-limits.html](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011024767.png)
 
 #### 如何切换 MySQL 的数据引擎？
 
@@ -870,15 +870,13 @@ ALTER TABLE your_table_name ENGINE=InnoDB;
 > 4. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的京东同学 4 云实习面试原题：mysql的数据引擎有哪些, 区别(innodb,MyISAM,Memory)
 > 5. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的阿里系面经同学 19 饿了么面试原题：存储引擎介绍
 
-memo：2025 年 3 月 10 日修改至此。
-
-### 25.存储引擎应该怎么选择？
+### :fire:25.存储引擎应该怎么选择？
 
 大多数情况下，使用默认的 InnoDB 就可以了，InnoDB 可以提供事务、行级锁、外键、B+ 树索引等能力。
 
-MyISAM 适合读多写少的场景。
+MyISAM 适合**读多写少**的场景。
 
-MEMORY 适合临时表，数据量不大的情况。因为数据都存放在内存，所以速度非常快。
+MEMORY 适合**临时表，数据量不大**的情况。因为数据都存放在内存，所以**速度非常快**。
 
 > 1. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的快手同学 2 一面面试原题：MySQL的InnoDB特点？为什么用B+树？而不是B树，区别？
 
@@ -886,13 +884,13 @@ MEMORY 适合临时表，数据量不大的情况。因为数据都存放在内�
 
 InnoDB 和 MyISAM 的最大区别在于事务支持和锁机制。InnoDB 支持事务、行级锁，适合大多数业务系统；而 MyISAM 不支持事务，用的是表锁，查询快但写入性能差，适合读多写少的场景。
 
-![三分恶面渣逆袭：InnoDB 和 MyISAM 主要有什么区别](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-b7aa040e-a3a7-4133-8c43-baccc3c8d012.jpg)
+![三分恶面渣逆袭：InnoDB 和 MyISAM 主要有什么区别](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011028169.jpeg)
 
 另外，从存储结构上来说，MyISAM 用三种格式的文件来存储，.frm 文件存储表的定义；.MYD 存储数据；.MYI 存储索引；而 InnoDB 用两种格式的文件来存储，.frm 文件存储表的定义；.ibd 存储数据和索引。
 
 从索引类型上来说，MyISAM 为非聚簇索引，索引和数据分开存储，索引保存的是数据文件的指针。
 
-![未见初墨：MyIsam](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240403130104.png)
+![未见初墨：MyIsam](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011040522.png)
 
 InnoDB 为聚簇索引，索引和数据不分开。
 
