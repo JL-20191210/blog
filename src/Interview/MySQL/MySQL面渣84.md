@@ -1827,7 +1827,9 @@ EXPLAIN SELECT o.order_id,
         FROM orders o;
 ```
 
-![二哥的 Java 进阶之路：子查询的执行计划](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250323213511.png)
+![二哥的 Java 进阶之路：子查询的执行计划](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031516238.png)
+
+
 
 子查询（DEPENDENT SUBQUERY）类型表明其依赖外层查询的每一行，导致重复执行。
 
@@ -1839,7 +1841,7 @@ EXPLAIN SELECT o.order_id,
         FROM orders o;
 ```
 
-![二哥的 Java 进阶之路：JOIN 的执行计划](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250323213756.png)
+![二哥的 Java 进阶之路：JOIN 的执行计划](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031519656.png)
 
 JOIN 通过 eq_ref 类型直接利用主键（customers.customer_id）快速关联，减少扫描次数。
 
