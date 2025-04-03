@@ -882,6 +882,8 @@ MEMORY 适合**临时表，数据量不大**的情况。因为数据都存放在
 
 ### 26.InnoDB 和 MyISAM 主要有什么区别？
 
+![image-20250403102636578](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031026644.png)
+
 InnoDB 和 MyISAM 的最大区别在于事务支持和锁机制。InnoDB 支持事务、行级锁，适合大多数业务系统；而 MyISAM 不支持事务，用的是表锁，查询快但写入性能差，适合读多写少的场景。
 
 ![三分恶面渣逆袭：InnoDB 和 MyISAM 主要有什么区别](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504011028169.jpeg)
@@ -894,7 +896,7 @@ InnoDB 和 MyISAM 的最大区别在于事务支持和锁机制。InnoDB 支持�
 
 InnoDB 为聚簇索引，索引和数据不分开。
 
-![yangh124：InnoDB](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240403130508.png)
+![yangh124：InnoDB](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031054884.png)
 
 更细微的层面上来讲，MyISAM 不支持外键，可以没有主键，表的具体行数存储在表的属性中，查询时可以直接返回；InnoDB 支持外键，必须有主键，具体行数需要扫描整个表才能返回，有索引的情况下会扫描索引。
 
@@ -909,11 +911,11 @@ memo：2025 年 3 月 11 日修改至此。
 
 Buffer Pool 是 InnoDB 存储引擎中的一个内存缓冲区，它会将经常使用的数据页、索引页加载进内存，读的时候先查询 Buffer Pool，如果命中就不用访问磁盘了。
 
-![Nuwan Weerasinhge：MySQL InnoDB Buffer Pool](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250312083102.png)
+![Nuwan Weerasinhge：MySQL InnoDB Buffer Pool](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053562.png)
 
 如果没有命中，就从磁盘读取，并加载到 Buffer Pool，此时可能会触发页淘汰，将不常用的页移出 Buffer Pool。
 
-![极客时间：改良的 LRU 算法](https://cdn.tobebetterjavaer.com/stutymore/mysql-20241104202752.png)
+![极客时间：改良的 LRU 算法](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053894.png)
 
 写操作时不会直接写入磁盘，而是先修改内存中的页，此时页被标记为脏页，后台线程会定期将脏页刷新到磁盘。
 
@@ -929,21 +931,21 @@ SHOW VARIABLES LIKE 'innodb_buffer_pool_size';
 
 另外，在具有 1GB-4GB RAM 的系统上，默认值为系统 RAM 的 25%；在具有超过 4GB RAM 的系统上，默认值为系统 RAM 的 50%，但不超过 4GB。
 
-![二哥的 Java 进阶之路：buffer_pool 的默认大小](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250312084307.png)
+![二哥的 Java 进阶之路：buffer_pool 的默认大小](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053824.png)
 
 #### InnoDB 对 LRU 算法的优化了解吗？
 
 了解，InnoDB 对 LRU 算法进行了改良，最近访问的数据并不直接放到 LRU 链表的头部，而是放在一个叫 midpoiont 的位置。默认情况下，midpoint 位于 LRU 列表的 5/8 处。
 
-![smartkeyerror：InnoDB 的 LRU](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250312085209.png)
+![smartkeyerror：InnoDB 的 LRU](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053162.png)
 
 比如 Buffer Pool 有 100 页，新页插入的位置大概是在第 80 页；当页数据被频繁访问后，再将其移动到 young 区，这样做的好处是热点页能长时间保留在内存中，不容易被挤出去。
 
 ----这部分是帮助大家理解 start，面试中可不背----
 
-可以通过 `innodb_old_blocks_pct` 参数来调整 Buffer Pool 中 old 和 young 区的比例；通过 `innodb_old_blocks_time` 参数来调整页在 young 区的停留时间。
+可以通过 `innodb_old_blocks_pct` 参数来调整 Buffer Pool 中 old 和 young 区的比例；`innodb_old_blocks_time` 主要用于设置一个时间阈值，用来控制页面从 **young 区** 转移到 **old 区** 的时间。该参数定义了在页面进入 old 区之前，必须在缓存池中停留的最短时间
 
-![二哥的 Java 进阶之路：对 buffer pool 进行调整](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250312093325.png)
+![二哥的 Java 进阶之路：对 buffer pool 进行调整](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053740.png)
 
 默认情况下，LRU 链表中 old 区占 37%；同一页再次访问提升的最小时间间隔是 1000 毫秒。
 
@@ -965,7 +967,7 @@ memo：2025 年 3 月 12 日修改至此。继续给大家一个喜报，今天[
 
 有 6 大类，其中错误日志用于问题诊断，慢查询日志用于 SQL 性能分析，general log 用于记录所有的 SQL 语句，binlog 用于主从复制和数据恢复，redo log 用于保证事务持久性，undo log 用于事务回滚和 MVCC。
 
-![三分恶面渣逆袭：MySQL的主要日志](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-c0ef6e68-bb33-48fc-b3a2-b9cdadd8e403.jpg)
+![三分恶面渣逆袭：MySQL的主要日志](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053781.jpeg)
 
 ----这部分是帮助大家理解 start，面试中可不背----
 
@@ -980,6 +982,8 @@ memo：2025 年 3 月 12 日修改至此。继续给大家一个喜报，今天[
 ⑤、**重做日志**（Redo Log）：记录对于 InnoDB 表的每个写操作，不是 SQL 级别的，而是物理级别的，主要用于崩溃恢复。
 
 ⑥、**回滚日志**（Undo Log，或者叫事务日志）：记录数据被修改前的值，用于事务的回滚。
+
+**:tipping_hand_man: 物理级别：redolog记录的是数据页内容的变化，而不是SQL语句**
 
 ----这部分是帮助大家理解 end，面试中可不背----
 
@@ -1002,7 +1006,7 @@ mysqlbinlog --start-datetime="2025-03-13 14:00:00" --stop-datetime="2025-03-13 1
 
 MySQL 提供了三种格式的 binlog：Statement、Row 和 Mixed，分别对应 SQL 语句级别、行级别和混合级别，默认为行级别。
 
-![二哥的 Java 进阶之路：MySQL 默认的 binlog格式](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250313151551.png)
+![二哥的 Java 进阶之路：MySQL 默认的 binlog格式](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053553.png)
 
 从后缀名上来看，binlog 文件分为两类：以 .index 结尾的索引文件，以 .00000\* 结尾的二进制日志文件。
 
@@ -1034,7 +1038,7 @@ sync_binlog=0
 
 `log_bin = mysql-bin` 用于启用 binlog，这样就可以在 MySQL 的数据目录中找到 db-bin.000001、db-bin.000002 等日志文件。
 
-![二哥的 Java 进阶之路：binlog 文件](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240417074049.png)
+![二哥的 Java 进阶之路：binlog 文件](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053585.png)
 
 `max_binlog_size=104857600` 用于设置每个 binlog 文件的大小，不建议设置太大，网络传送起来比较麻烦。
 
@@ -1054,7 +1058,7 @@ sync_binlog=0
 
 可以通过 `show variables like '%log_bin%';` 查看 binlog 是否开启。
 
-![二哥的 Java 进阶之路：开启 binlog](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240326102701.png)
+![二哥的 Java 进阶之路：开启 binlog](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053075.png)
 
 #### 有了binlog为什么还要undolog redolog？
 
@@ -1129,17 +1133,19 @@ memo：2025 年 3 月 13 日修改至此。有[球友报喜](httpshttps://javabe
 
 这些 Redo Log 首先会被写入内存中的 Redo Log Buffer。
 
-![二哥的 Java 进阶之路： 我本机 MySQL 的 redolog buffer size 为 16M](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314155647.png)
+![二哥的 Java 进阶之路： 我本机 MySQL 的 redolog buffer size 为 16M](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031053582.png)
 
 当事务提交时，MySQL 再将 Redo Log Buffer 中的记录刷新到磁盘上的 Redo Log 文件中。
 
 只有当 Redo Log 成功写入磁盘，事务才算真正提交成功。
 
-![greatsql 社区：Redo Log的刷盘策略](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314160523.png)
+![greatsql 社区：Redo Log的刷盘策略](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031056949.png)
 
 当 MySQL 崩溃重启时，会先检查 Redo Log。对于已提交的事务，MySQL 会重放 Redo Log 中的记录。
 
-![greatsql 社区：redo log 恢复](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314160157.png)
+事务虽然在提交时已通知应用程序，但其数据可能未完全写入数据库文件，因此必须通过重放 Redo Log 确保这些变更被持久化，避免数据丢失或不一致的状态。
+
+![greatsql 社区：redo log 恢复](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031056256.png)
 
 对于未提交的事务，MySQL 会通过 Undo Log 回滚这些修改，确保数据恢复到崩溃前的一致性状态。
 
@@ -1147,7 +1153,7 @@ Redo Log 是循环使用的，当文件写满后会覆盖最早的记录。
 
 为避免覆盖未持久化的记录，MySQL 会定期执行 CheckPoint 操作，将内存中的数据页刷新到磁盘，并记录 CheckPoint 点。
 
-![博客园太白金星有点烦：checkpoint](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314161732.png)
+![博客园太白金星有点烦：checkpoint](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031056168.png)
 
 重启时，MySQL 只会重放 CheckPoint 之后的 Redo Log，从而提高恢复效率。
 
@@ -1155,15 +1161,15 @@ Redo Log 是循环使用的，当文件写满后会覆盖最早的记录。
 
 redo log 文件是固定大小的，通常配置为一组文件，使用环形方式写入，旧的日志会在空间需要时被覆盖。
 
-![greatsql社区：redo log 文件组](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314161331.png)
+![greatsql社区：redo log 文件组](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031057820.png)
 
 命名方式为 `ib_logfile0、iblogfile1、、、iblogfilen`。默认 2 个文件，每个文件大小为 48MB。
 
-![greatsql社区：ib_logfile0和ib_logfile1](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314160340.png)
+![greatsql社区：ib_logfile0和ib_logfile1](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031057587.png)
 
 可以通过 `show variables like 'innodb_log_file_size';` 查看 redo log 文件的大小；通过 `show variables like 'innodb_log_files_in_group';` 查看 redo log 文件的数量。
 
-![二哥的 Java 进阶之路：redo log 文件大小](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314155806.png)
+![二哥的 Java 进阶之路：redo log 文件大小](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031057992.png)
 
 #### 说说 WAL？
 
@@ -1171,7 +1177,7 @@ redo log 文件是固定大小的，通常配置为一组文件，使用环形�
 
 预写日志是 InnoDB 实现事务持久化的核心机制，它的思想是：先写日志再刷磁盘。
 
-![小许 code：WAL](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250314163343.png)
+![小许 code：WAL](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031058168.png)
 
 即在修改数据页之前，先将修改记录写入 Redo Log。
 
@@ -1201,11 +1207,11 @@ memo：2025 年 3 月 14 日修改至此。今天修改简历的时候，碰到�
 
 binlog 由 MySQL 的 Server 层实现，与存储引擎无关；redo log 由 InnoDB 存储引擎实现。
 
-![连边：binlog 和 redo log](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250315151137.png)
+![连边：binlog 和 redo log](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031058683.png)
 
-binlog 记录的是逻辑日志，包括原始的 SQL 语句或者行数据变化，例如“将 id=2 这行数据的 age 字段+1”。
+binlog 记录的是**逻辑日志**，包括原始的 SQL 语句或者行数据变化**，例如“将 id=2 这行数据的 age 字段+1”。**
 
-redo log 记录物理日志，即数据页的具体修改，例如“将 page_id=123 上 offset=0x40 的数据从 18 修改为 26”。
+redo log 记录**物理日志**，即数据页的具体修改，例如**“将 page_id=123 上 offset=0x40 的数据从 18 修改为 26”。**
 
 binlog 是追加写入的，文件写满后会新建文件继续写入，不会覆盖历史日志，保存的是全量操作记录；redo log 是循环写入的，空间是固定的，写满后会覆盖旧的日志，仅保存未刷盘的脏页日志，已持久化的数据会被清除。
 
@@ -1219,13 +1225,13 @@ binlog 是追加写入的，文件写满后会新建文件继续写入，不会�
 
 为了保证 redo log 和 binlog 中的数据一致性，防止主从复制和事务状态不一致。
 
-![阿里：MySQL 两阶段提交](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250316104456.png)
+![阿里：MySQL 两阶段提交](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031100181.png)
 
 #### 为什么 2PC 能保证 redo log 和 binlog 的强⼀致性？
 
 假如 MySQL 在预写 redo log 之后、写入 binlog 之前崩溃。那么 MySQL 重启后 InnoDB 会回滚该事务，因为 redo log 不是提交状态。并且由于 binlog 中没有写入数据，所以从库也不会有该事务的数据。
 
-![阿里：2PC 可以保证redo log 和 binlog 的数据一致性](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250316105500.png)
+![阿里：2PC 可以保证redo log 和 binlog 的数据一致性](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031101123.png)
 
 假如 MySQL 在写入 binlog 之后、redo log 提交之前崩溃。那么 MySQL 重启后 InnoDB 会提交该事务，因为 redo log 是提交状态。并且由于 binlog 中有写入数据，所以从库也会同步到该事务的数据。
 
@@ -1263,7 +1269,7 @@ end;
 
 XID 是 binlog 中用来标识事务提交的唯一标识符。
 
-![mysql：xid](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250316113030.png)
+![mysql：xid](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031102366.png)
 
 在事务提交时，会写入一个 XID_EVENT 到 binlog，表示这个事务真正完成了。
 
@@ -1286,7 +1292,7 @@ memo：2025 年 3 月 16 日修改至此。
 
 InnoDB 会先将 Redo Log 写入内存中的 Redo Log Buffer，之后再以一定的频率刷入到磁盘的 Redo Log File 中。
 
-![三分恶面渣逆袭：redo log 缓冲](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-e1f59341-0695-45db-b759-30db73314e39.jpg)
+![三分恶面渣逆袭：redo log 缓冲](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031103126.jpeg)
 
 #### 哪些场景会触发 redo log 的刷盘动作？
 
@@ -1294,27 +1300,27 @@ InnoDB 会先将 Redo Log 写入内存中的 Redo Log Buffer，之后再以一�
 
 不过，Redo Log Buffer 刷盘到 Redo Log File 还会涉及到操作系统的磁盘缓存策略，可能不会立即刷盘，而是等待一定时间后才刷盘。
 
-![酷酷博客园：Page Cache](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250317160220.png)
+![酷酷博客园：Page Cache](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031103185.png)
 
 #### innodb_flush_log_at_trx_commit 参数你了解多少？
 
 innodb_flush_log_at_trx_commit 参数是用来控制事务提交时，Redo Log 的刷盘策略，一共有三种。
 
-![greatsql：innodb_flush_log_at_trx_commit](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250317155312.png)
+![greatsql：innodb_flush_log_at_trx_commit](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031103502.png)
 
 0 表示事务提交时不刷盘，而是交给后台线程每隔 1 秒执行一次。这种方式性能最好，但是在 MySQL 宕机时可能会丢失一秒内的事务。
 
 1 表示事务提交时会立即刷盘，确保事务提交后数据就持久化到磁盘。这种方式是最安全的，也是 InnoDB 的默认值。
 
-![二哥的 Java 进阶之路：innodb_flush_log_at_trx_commit的默认值](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250317160701.png)
+![二哥的 Java 进阶之路：innodb_flush_log_at_trx_commit的默认值](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031108606.png)
 
-2 表示事务提交时只把 Redo Log Buffer 写入到 Page Cache，由操作系统决定什么时候刷盘。操作系统宕机时，可能会丢失一部分数据。
+2 表示事务提交时只把 Redo Log Buffer 写入到 Page Cache，**由操作系统决定什么时候刷盘**。操作系统宕机时，可能会丢失一部分数据。
 
 #### 一个没有提交事务的 redo log，会不会刷盘？
 
 InnoDB 有一个后台线程，每隔 1 秒会把 Redo Log Buffer 中的日志写入到文件系统的缓存中，然后调用刷盘操作。
 
-![greatsql：InnoDB 的后台线程](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250317161008.png)
+![greatsql：InnoDB 的后台线程](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031109118.png)
 
 因此，一个没有提交事务的 Redo Log 也可能会被刷新到磁盘中。
 
@@ -1328,21 +1334,21 @@ memo：2025 年 3 月 17 日修改至此。已经有[球友发来喜报](https:/
 
 MySQL 在启动后会向操作系统申请一块连续的内存空间作为 Redo Log Buffer，并将其分为若干个连续的 Redo Log Block。
 
-![xyZGHio：Redo Log Block](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318160752.png)
+![xyZGHio：Redo Log Block](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031109238.png)
 
 那为了提高写入效率，Redo Log Buffer 采用了顺序写入的方式，会先往前面的 Redo Log Block 中写入，当写满后再往后面的 Block 中写入。
 
-![greatsql：redo log buffer的写入](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318152808.png)
+![greatsql：redo log buffer的写入](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031110193.png)
 
 于此同时，InnoDB 还提供了一个全局变量 buf_free，来控制后续的 redo log 记录应该写入到 block 中的哪个位置。
 
 #### buf_next_to_write 了解吗？
 
-buf_next_to_write 指向 Redo Log Buffer 中下一次需要写入硬盘的起始位置。
+**buf_next_to_write** 指向 Redo Log Buffer 中下一次需要写入硬盘的起始位置。
 
-![xyZGHio：buf_next_to_write](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318180850.png)
+![xyZGHio：buf_next_to_write](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031110379.png)
 
-而 buf_free 指向的是 Redo Log Buffer 中空闲区域的起始位置。
+而 **buf_free** 指向的是 Redo Log Buffer 中空闲区域的起始位置。
 
 #### 了解 MTR 吗？
 
@@ -1377,17 +1383,17 @@ mtr_commit(&mtr);
 
 多个事务的 Redo Log 会以 MTR 为单位交替写入到 Redo Log Buffer 中，假如事务 1 和事务 2 均有两个 MTR，一旦某个 MTR 结束，就会将其生成的若干条 Redo Log 记录顺序写入到 Redo Log Buffer 中。
 
-![xyZGHio：MTR 与 Redo Log Buffer](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318163110.png)
+![xyZGHio：MTR 与 Redo Log Buffer](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031113059.png)
 
-也就是说，一个 MTR 会包含一组 Redo Log 记录，是 MySQL 崩溃后恢复事务的最小执行单元。
+也就是说，一个 MTR 会包含一组 Redo Log 记录，是 MySQL 崩溃后**c**的最小执行单元。
 
-![xyZGHio：MTR](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318163310.png)
+![xyZGHio：MTR](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031117528.png)
 
 #### Redo Log Block 的结构了解吗？
 
 Redo Log Block 由日志头、日志体和日志尾组成，一共占用 512 个字节，其中日志头占用 12 个字节，日志尾占用 4 个字节，剩余的 496 个字节用于存储日志体。
 
-![greatsql：Redo Log Block](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318154904.png)
+![greatsql：Redo Log Block](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031120532.png)
 
 日志头包含了当前 Block 的序列号、第一条日志的序列号、类型等信息。
 
@@ -1404,9 +1410,9 @@ LOG_BLOCK_CHECKPOINT_NO| Block 最后被写入时的checkpoint
 
 因为机械硬盘的物理扇区大小通常为 512 字节，Redo Log Block 也设计为同样的大小，就可以确保每次写入都是整数个扇区，减少对齐开销。
 
-![西维蜀黍：Redo Log 工作原理](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318155855.png)
+![西维蜀黍：Redo Log 工作原理](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031121724.png)
 
-比如说操作系统的页缓存默认为 4KB，8 个 Redo Log Block 就可以组合成一个页缓存单元，从而提升 Redo Log Buffer 的写入效率。
+比如说**操作系统的页缓存默认为 4KB**，8 个 Redo Log Block 就可以组合成一个页缓存单元，从而提升 Redo Log Buffer 的写入效率。
 
 memo：2025 年 3 月 18 日修改至此。
 
@@ -1414,7 +1420,7 @@ memo：2025 年 3 月 18 日修改至此。
 
 Log Sequence Number 是一个 8 字节的单调递增整数，用来标识事务写入 redo log 的字节总量，存在于 redo log、数据页头部和 checkpoint 中。
 
-![xyZGHio：LSN](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250318181133.png)
+![xyZGHio：LSN](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031122280.png)
 
 ----这部分是帮助大家理解 start，面试中可不背----
 
@@ -1426,7 +1432,7 @@ MySQL 在第一次启动时，LSN 的初始值并不为 0，而是 8704；当 My
 
 假如事务 4 的 MTR 总量为 900 字节，那么再次写入到 Redo Log Buffer 中的 LSN 会增长为 9016 + 900 + 12\*2 + 4\*2 = 9948。
 
-2 个 12 字节的 log block header + 2 个 4 字节的 log block tail。
+**2 个 12 字节的 log block header + 2 个 4 字节的 log block tail。**
 
 ----这部分是帮助大家理解 end，面试中可不背----
 
@@ -1449,7 +1455,7 @@ MySQL 在第一次启动时，LSN 的初始值并不为 0，而是 8704；当 My
 
 可以通过 `show engine innodb status;` 查看当前的 LSN 信息。
 
-![二哥的 Java 进阶之路：LSN](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250319161213.png)
+![二哥的 Java 进阶之路：LSN](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031128986.png)
 
 - Log sequence number：当前系统最大 LSN（已生成的日志总量）。
 - Log flushed up to：已写入磁盘的 redo log LSN。
@@ -1472,13 +1478,13 @@ MySQL 崩溃恢复时只需要从 Checkpoint 之后开始恢复 redo log 就可�
 
 redo log file 的写入是循环的，其中有两个标记位置非常重要，也就是 Checkpoint 和 write pos。
 
-![三分恶面渣逆袭：checkpoint 和 write pos](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-8d944e76-89ba-4fa6-9066-64ff4f55b532.jpg)
+![三分恶面渣逆袭：checkpoint 和 write pos](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031129162.jpeg)
 
 write pos 是 redo log 当前写入的位置，Checkpoint 是可以被覆盖的位置。
 
 当 write pos 追上 Checkpoint 时，表示 redo log 日志已经写满。这时候就要暂停写入并强制刷盘，释放可覆写的日志空间。
 
-![三分恶面渣逆袭：write pos 和 checkpoint](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-31a14149-b261-45d9-bd3b-6afaec16e136.jpg)
+![三分恶面渣逆袭：write pos 和 checkpoint](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031130842.jpeg)
 
 #### 关于redo log 的调优参数了解多少？
 
@@ -1514,6 +1520,8 @@ innodb_flush_log_at_trx_commit|	redo 刷盘策略|	安全性 vs TPS
 innodb_max_dirty_pages_pct|	脏页比例阈值|	何时触发刷盘 / Checkpoint
 innodb_io_capacity|	后台刷盘速度|	限制 checkpoint 刷盘压力
 
+:fire:**TPS** 是指 **每秒事务数**，**QPS** 是指 **每秒查询数**
+
 总结：
 
 - 对数据一致性要求高的场景，如金融交易使用`innodb_flush_log_at_trx_commit=1`，对写入吞吐量敏感的场景，如日志采集可以使用 =2 或 =0，需要结合 sync_binlog 参数
@@ -1540,7 +1548,7 @@ MySQL 中有一个叫 long_query_time 的参数，原则上执行时间超过该
 
 可通过 `show variables like 'long_query_time';` 查看当前的 long_query_time 的参数值。
 
-![二哥的 Java 进阶之路：long_query_time](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240327083506.png)
+![二哥的 Java 进阶之路：long_query_time](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031444169.png)
 
 ----这部分是帮助大家理解 end，面试中可不背----
 
@@ -1550,7 +1558,7 @@ MySQL 中有一个叫 long_query_time 的参数，原则上执行时间超过该
 
 SQL 的执行过程大致可以分为六个阶段：连接管理、语法解析、语义分析、查询优化、执行器调度、存储引擎读写等。Server 层负责理解和规划 SQL 怎么执行，存储引擎层负责数据的真正读写。
 
-![三个猪皮匠：SQL 执行过程](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240327083838.png)
+![三个猪皮匠：SQL 执行过程](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031444160.png)
 
 ----这部分是帮助大家理解 start，面试中可不背----
 
@@ -1581,7 +1589,7 @@ SQL 执行过程中，优化器通过成本计算预估出执行效率最高的�
 
 也可以使用 `show processlist;` 命令查看当前正在执行的 SQL 语句，找出执行时间较长的 SQL。
 
-![二哥的java 进阶之路：技术派当前正在执行的 sql](https://cdn.tobebetterjavaer.com/stutymore/mysql-20241115145204.png)
+![二哥的java 进阶之路：技术派当前正在执行的 sql](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031447190.png)
 
 或者在业务基建中加入对慢 SQL 的监控，常见的方案有字节码插桩、连接池扩展、ORM 框架扩展等。
 
@@ -1634,13 +1642,13 @@ SQL 优化的方法非常多，但本质上就一句话：尽可能少地扫描�
 
 最常见的做法就是加索引、改写 SQL 让它用上索引，比如说使用索引覆盖、让联合索引遵守最左前缀原则等。
 
-![沉默王二：SQL 优化](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240327104050.png)
+![沉默王二：SQL 优化](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031449129.png)
 
 #### 如何利用索引覆盖？
 
 索引覆盖的核心是“查询所需的字段都在同一个索引里”，这样 MySQL 就不需要回表，直接从索引中返回结果。
 
-![梦里花。：回表](https://cdn.tobebetterjavaer.com/stutymore/mysql-20250322095940.png)
+![梦里花。：回表](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031450531.png)
 
 实际使用中，我会优先考虑把 WHERE 和 SELECT 涉及的字段一起建联合索引，并通过 EXPLAIN 观察结果是否有 Using index，确认命中索引。
 
@@ -1701,7 +1709,7 @@ ORDER BY e.id
 LIMIT 1000, 20;
 ```
 
-延迟关联后，第一步只查主键，速度快，第二步只处理 20 条数据，效率高。
+**延迟关联**后，第一步只查主键，速度快，第二步只处理 20 条数据，效率高。
 
 ```sql
 SELECT e.id, e.name, d.details
@@ -1715,7 +1723,7 @@ JOIN employees e ON sub.id = e.id
 JOIN department d ON e.department_id = d.id;
 ```
 
-添加书签的方式是通过记住上一次查询返回的最后一行主键值，然后在下一次查询的时候从这个值开始，从而跳过偏移量计算，仅扫描目标数据，适合翻页、资讯流等场景。
+**添加书签**的方式是通过记住上一次查询返回的最后一行主键值，然后在下一次查询的时候从这个值开始，从而跳过偏移量计算，仅扫描目标数据，适合翻页、资讯流等场景。
 
 假设需要对用户表进行分页。
 

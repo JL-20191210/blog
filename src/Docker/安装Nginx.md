@@ -20,6 +20,7 @@ docker run -d \
 -v /docker/nginx/logs:/var/log/nginx \
 -v /docker/nginx/html:/usr/share/nginx/html \
 nginx:1.19.4 
+
 ```
 
 > -p host_port:container_port
