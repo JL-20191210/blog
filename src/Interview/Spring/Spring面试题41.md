@@ -663,7 +663,7 @@ Bean 是指由 Spring 容器管理的对象，它的生命周期由容器控制�
 
 ![二哥的 Java 进阶之路：Bean 的声明方式](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061755248.png)
 
-①、使用 `@Component`、`@Service`、`@Repository`、`@Controller` 等注解定义，主流。
+①、使用 `@Component`、`@Service`、`@Repository`、`@Controller` 等注解定义，**主流**。
 
 ②、基于 XML 配置，Spring Boot 项目已经不怎么用了。
 
@@ -969,7 +969,7 @@ LifecycleDemoBean: destroy（DisposableBean）
 LifecycleDemoBean: customDestroy（自定义销毁方法）
 ```
 
-#### Aware 类型的接口有什么作用？
+#### :walking:Aware 类型的接口有什么作用？
 
 通过实现 Aware 接口，Bean 可以获取 Spring 容器的相关信息，如 BeanFactory、ApplicationContext 等。
 
