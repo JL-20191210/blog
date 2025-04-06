@@ -1897,7 +1897,7 @@ UNION 操作用于合并两个或者多个 SELECT 语句的结果集。
 
 **①、条件下推**
 
-条件下推是指将 where、limit 等子句下推到 union 的各个子查询中，以便优化器可以充分利用这些条件进行优化。
+条件下推是指将 where、limit 等子句**下推到 union 的各个子查询中**，以便优化器可以充分利用这些条件进行优化。
 
 假设我们有两个查询分支，需要合并结果并过滤：
 
@@ -1932,7 +1932,9 @@ SELECT * FROM B WHERE id = 1;
 
 `!=` 或者 `<>` 操作符会导致 MySQL 无法使用索引，从而导致全表扫描。
 
-例如，可以把`column<>'aaa'`，改成`column>'aaa' or column<'aaa'`，就可以使用索引了。
+:fire:<>表示不等于
+
+:fire:例如，可以把`column<>'aaa'`，改成`column>'aaa' or column<'aaa'`，就可以使用索引了。
 
 优化策略就是尽可能使用 `=`、`>`、`<`、`BETWEEN`等操作符，它们能够更好地利用索引。
 
@@ -1943,6 +1945,7 @@ SELECT * FROM B WHERE id = 1;
 比如，邮箱的后缀一般都是固定的`@xxx.com`，那么类似这种后面几位为固定值的字段就非常适合定义为前缀索引：
 
 ```sql
+--- 在 test 表的 email 列的前 6 个字符上创建一个名为 index2 的索引
 alter table test add index index2(email(6));
 ```
 
@@ -1964,17 +1967,19 @@ select name from test where create_time>='2021-01-01 00:00:00' and create_t
 
 通过日期的范围查询，而不是在列上使用函数，可以利用 create_time 上的索引。
 
-#### 了解MRR 吗？
+**⑤、正确使用联合索引**
 
+正确地使用联合索引可以极大地提高查询性能，联合索引的创建应遵循最左前缀原则，即索引的顺序应根据列在查询中的使用频率和重要性来安排。
 
+```sql
+select * from messages where sender_id=1 and receiver_id=2 and is_read=0;
+```
 
+那就可以为 sender_id、receiver_id 和 is_read 这三个字段创建联合索引，但是要注意索引的顺序，应该按照查询中的字段顺序来创建索引。
 
-
-
-
-
-
-
+```sql
+alter table messages add index index3(sender_id,receiver_id,is_read);
+```
 
 
 > 1. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的腾讯面经同学 22 暑期实习一面面试原题：查询优化、联合索引、覆盖索引
@@ -1995,7 +2000,7 @@ explain 是 MySQL 提供的一个用于查看查询执行计划的工具，可�
 explain select * from students where id =9
 ```
 
-![三分恶面渣逆袭：EXPLAIN](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-e234658f-5672-4a8d-9a75-872b305a171d.jpg)
+![三分恶面渣逆袭：EXPLAIN](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031542047.jpeg)
 
 explain 的输出结果中包含了很多字段，下面是一些常见的字段含义：
 
@@ -2042,7 +2047,7 @@ explain 的输出结果中包含了很多字段，下面是一些常见的字段
 
 示例：
 
-![二哥的 Java 进阶之路](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240417092646.png)
+![二哥的 Java 进阶之路](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031544193.png)
 
 #### type的执行效率等级，达到什么级别比较合适？
 
@@ -2053,16 +2058,6 @@ explain 的输出结果中包含了很多字段，下面是一些常见的字段
 如果是范围查询，range 类型也是可以接受的。
 
 通常要避免出现 ALL 类型，因为它表示全表扫描，性能最低。
-
-> 1. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的华为面经同学 8 技术二面面试原题：怎么看走没走索引，如何分析 SQL
-> 2. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的作业帮面经同学 1 Java 后端一面面试原题：key-len和key没什么区别，什么时候会用到key-len，你还会查看explain中的哪些字段，extra有哪些类型
-> 3. [Java 面试指南（付费）](https://javabetter.cn/zhishixingqiu/mianshi.html)收录的同学 1 贝壳找房后端技术一面面试原题：explain分析后， type的执行效率等级，达到什么级别比较合适
-
-GitHub 上标星 10000+ 的开源知识库《[二哥的 Java 进阶之路](https://github.com/itwanger/toBeBetterJavaer)》第一版 PDF 终于来了！包括 Java 基础语法、数组&字符串、OOP、集合框架、Java IO、异常处理、Java 新特性、网络编程、NIO、并发编程、JVM 等等，共计 32 万余字，500+张手绘图，可以说是通俗易懂、风趣幽默……详情戳：[太赞了，GitHub 上标星 10000+ 的 Java 教程](https://javabetter.cn/overview/)
-
-微信搜 **沉默王二** 或扫描下方二维码关注二哥的原创公众号沉默王二，回复 **222** 即可免费领取。
-
-![](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/gongzhonghao.png)
 
 ## 索引
 
@@ -2078,7 +2073,7 @@ MySQL 的 InnoDB 存储引擎默认使用 B+ 树来作为索引的数据结构�
 
 索引就好像书的目录，通过目录去查找对应的章节内容会比一页一页的翻书快很多。
 
-![三分恶面渣逆袭：索引加快查询远离](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/mysql-6b9c9901-9bf3-46ed-a5c4-c1b781965c1e.jpg)
+![三分恶面渣逆袭：索引加快查询远离](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031545257.jpeg)
 
 可通过 `create index` 创建索引，比如：
 
@@ -2121,7 +2116,7 @@ CREATE INDEX idx_age_name ON users(age, name);
 
 MySQL 的索引可以显著提高查询的性能，可以从三个不同的维度对索引进行分类（功能、数据结构、存储位置）：
 
-![二哥的 Java 进阶之路：索引类型](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240311225809.png)
+![二哥的 Java 进阶之路：索引类型](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031546711.png)
 
 #### 01、说说从功能上的分类？
 
@@ -2141,9 +2136,9 @@ id 列被指定为主键索引，同时，MySQL 会自动为这个列创建一�
 
 可以通过 `show index from table_name` 查看索引信息，比如前面创建的 users 表：
 
-![二哥的 Java 进阶之路：索引信息](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240312090221.png)
+![二哥的 Java 进阶之路：索引信息](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031552769.png)
 
-- `Non_unique` 如果索引不能包含重复词，则为 0；如果可以，则为 1。这可以帮助我们区分是唯一索引还是普通索引。
+- `Non_unique(非唯一索引-普通索引)` 表示该索引是否允许重复的值。允许重复为1，不许重复为0。唯一索引为0，普通索引为1。
 - `Key_name` 索引的名称。如果索引是主键，那么这个值是 PRIMARY。
 - `Column_name` 索引所包含的字段名。
 - `Index_type` 索引的类型，比如 BTREE、HASH 等。
@@ -2158,7 +2153,7 @@ CREATE UNIQUE INDEX idx_username ON users(username);
 
 同样可以通过 `show index from table_name` 确认索引信息：
 
-![二哥的 Java 进阶之路：唯一索引](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240312091008.png)
+![二哥的 Java 进阶之路：唯一索引](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031555883.png)
 
 `Non_unique` 为 0，表示这是一个唯一索引。
 
@@ -2178,7 +2173,7 @@ FROM information_schema.statistics
 WHERE `TABLE_NAME` = 'users' AND `TABLE_SCHEMA` = DATABASE();
 ```
 
-![二哥的 Java 进阶之路：普通索引](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240312091632.png)
+![二哥的 Java 进阶之路：普通索引](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031556261.png)
 
 可以确定 idx_email 是一个普通索引，因为 `Non_unique` 为 1。
 
@@ -2198,9 +2193,11 @@ CREATE FULLTEXT INDEX idx_article_content ON articles(content);
 
 B+ 树是 B 树的升级版，B+ 树中的非叶子节点都不存储数据，只存储索引。叶子节点中存储了所有的数据，并且构成了一个从小到大的有序双向链表，使得在完成一次树的遍历定位到范围查询的起点后，可以直接通过叶子节点间的指针顺序访问整个查询范围内的所有记录，而无需对树进行多次遍历。这在处理大范围的查询时特别高效。
 
-![一颗剽悍的种子：B+树的结构](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240312092745.png)
+![一颗剽悍的种子：B+树的结构](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504031719767.png)
 
 因为 B+ 树是 InnoDB 的默认索引类型，所以创建 B+ 树的时候不需要指定索引类型。
+
+在 MySQL 中，**InnoDB** 存储引擎使用 **B+ 树** 作为默认的索引结构，所以当你创建索引时，如果没有明确指定索引类型，MySQL 会默认使用 B+ 树来创建该索引
 
 ```sql
 CREATE TABLE example_btree (
@@ -2214,7 +2211,7 @@ CREATE TABLE example_btree (
 
 Hash 索引在原理上和 Java 中的 [HashMap](https://javabetter.cn/collection/hashmap.html) 类似，当发生哈希冲突的时候也是通过拉链法来解决。
 
-![业余码农：哈希索引](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240312094537.png)
+![业余码农：哈希索引](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061524459.png)
 
 可以通过下面的语句创建哈希索引：
 
@@ -2240,7 +2237,7 @@ SHOW VARIABLES LIKE 'innodb_adaptive_hash_index';
 
 如果返回的值是 ON，说明自适应哈希索引是开启的。
 
-![二哥的 Java 进阶之路](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240312095811.png)
+![二哥的 Java 进阶之路](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061524747.png)
 
 #### 03、说说从存储位置上分类：
 
@@ -2250,7 +2247,7 @@ SHOW VARIABLES LIKE 'innodb_adaptive_hash_index';
 
 ②、非聚簇索引：它的叶子节点只包含一个主键值，通过非聚簇索引查找记录要先找到主键，然后通过主键再到聚簇索引中找到对应的记录行，这个过程被称为回表。
 
-![代码敲上天.非聚簇索引，以 age 为索引](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240311231611.png)
+![代码敲上天.非聚簇索引，以 age 为索引](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061528892.png)
 
 InnoDB 存储引擎的主键使用的是聚簇索引，MyISAM 存储引擎不管是主键索引，还是二级索引使用的都是非聚簇索引。
 
@@ -2405,7 +2402,7 @@ B 树是一种自平衡的多路查找树，和红黑树、二叉平衡树不同
 
 换句话说，红黑树、二叉平衡树是细高个，而 B 树是矮胖子。
 
-![二哥的 Java 进阶之路：B 树](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240322132606.png)
+![二哥的 Java 进阶之路：B 树](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061537710.png)
 
 内存和磁盘在进行 IO 读写的时候，有一个最小的逻辑单元，叫做页（Page），页的大小一般是 4KB。
 
@@ -2419,11 +2416,11 @@ B 树是一种自平衡的多路查找树，和红黑树、二叉平衡树不同
 
 树越高，意味着查找数据时就需要更多的磁盘 IO，因为每一层都可能需要从磁盘加载新的节点。
 
-![用户1260737：二叉树](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240322140825.png)
+![用户1260737：二叉树](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061538602.png)
 
 B 树的节点大小通常与页的大小对齐，这样每次从磁盘加载一个节点时，可以正好是一个页的大小。因为 B 树的节点可以有多个子节点，可以填充更多的信息以达到一页的大小。
 
-![用户1260737：B 树](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240322141957.png)
+![用户1260737：B 树](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061538948.png)
 
 B 树的一个节点通常包括三个部分：
 
@@ -2435,7 +2432,7 @@ B 树的一个节点通常包括三个部分：
 
 于是 B+树就来了，B+树的非叶子节点只存储键值，不存储数据，而叶子节点存储了所有的数据，并且构成了一个有序链表。
 
-![用户1260737：B+树](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240322142950.png)
+![用户1260737：B+树](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061648433.png)
 
 这样做的好处是，非叶子节点上由于没有存储数据，就可以存储更多的键值对，树就变得更加矮胖了，于是就更有劲了，每次搬的砖也就更多了（😂）。
 
@@ -2445,19 +2442,19 @@ B 树的一个节点通常包括三个部分：
 
 **注**：在 InnoDB 存储引擎中，默认的页大小是 16KB。可以通过 `show variables like 'innodb_page_size';` 查看。
 
-![二哥的 Java 进阶之路：页的大小](https://cdn.tobebetterjavaer.com/stutymore/mysql-20240322135441.png)
+![二哥的 Java 进阶之路：页的大小](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061657043.png)
 
 #### 简版回答：
 
 MySQL 的默认存储引擎是 InnoDB，它采用的是 B+树索引，B+树是一种自平衡的多路查找树，和红黑树、二叉平衡树不同，B+树的每个节点可以有 m 个子节点，而红黑树和二叉平衡树都只有 2 个。
 
-![William Johnson：b+树](https://cdn.tobebetterjavaer.com/stutymore/mysql-20241104203402.png)
+![William Johnson：b+树](https://felix-docs.oss-cn-beijing.aliyuncs.com/gitblogimg/202504061651302.png)
 
 和 B 树不同，B+树的非叶子节点只存储键值，不存储数据，而叶子节点存储了所有的数据，并且构成了一个有序链表。
 
 这样做的好处是，非叶子节点上由于没有存储数据，就可以存储更多的键值对，再加上叶子节点构成了一个有序链表，范围查询时就可以直接通过叶子节点间的指针顺序访问整个查询范围内的所有记录，而无需对树进行多次遍历。查询的效率会更高。
 
-#### B+树的页是单向链表还是双向链表？如果从大值向小值检索，如何操作？
+#### :walking:B+树的页是单向链表还是双向链表？如果从大值向小值检索，如何操作？
 
 B+树的叶子节点是通过双向链表连接的，这样可以方便范围查询和反向遍历。
 
