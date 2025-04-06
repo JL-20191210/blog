@@ -1922,7 +1922,7 @@ public class BookServiceImpl implements BookService{
 
 **说明:**
 
-标签<constructor-arg>中
+标签`<constructor-arg>`中
 
 * name属性对应的值为构造函数中方法形参的参数名，必须要保持一致。
 
@@ -2396,7 +2396,7 @@ public class AppForDICollection {
 
 接下来，在上面这个环境中来完成`集合注入`的学习:
 
-下面的所以配置方式，都是在bookDao的bean标签中使用<property>进行注入
+下面的所以配置方式，都是在bookDao的bean标签中使用`<property>`进行注入
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
