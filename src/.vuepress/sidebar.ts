@@ -38,4 +38,5 @@ export default sidebar({
   "/项目实战/":"structure",
   "/Linux/":"structure",
   "/Interview/":"structure",
+  "/SSM/":"structure",
 });

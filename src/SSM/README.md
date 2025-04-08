@@ -1,5 +1,5 @@
 ---
-icon: pen-to-square
+icon: fa-solid fa-leaf
 date: 2024-12-03
 category:
   - Java

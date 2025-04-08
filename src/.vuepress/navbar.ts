@@ -36,18 +36,46 @@ export default navbar([
     link: "/Vue/",
     activeMatch: "^/Vue/$",
   },
+  // {
+  //   text: "Spring",
+  //   icon: "fa-solid fa-leaf",
+  //   prefix: "/Spring/",
+  //   link: "Spring",
+  //   children: [
+  //     {
+  //       text: "Spring",
+  //       link: "README.md",
+  //       icon: "fa-solid fa-leaf",
+  //       // 仅在 `/zh/guide/` 激活
+  //       activeMatch: "^/Spring/$",
+  //     },
+  //   ],
+  // },
   {
     text: "Spring",
     icon: "fa-solid fa-leaf",
     prefix: "/Spring/",
-    link: "Spring",
     children: [
       {
         text: "Spring",
-        link: "README.md",
+        link: "/Spring/README.md",
         icon: "fa-solid fa-leaf",
         // 仅在 `/zh/guide/` 激活
         activeMatch: "^/Spring/$",
+      },
+      {
+        text: "SpringMVC",
+        link: "/SpringMVC/README.md",
+        icon: "fa-solid fa-leaf",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/SpringMVC/$",
+      },
+      {
+        text: "SSM",
+        link: "/SSM/README.md",
+        icon: "fa-solid fa-leaf",
+        // 仅在 `/zh/guide/` 激活
+        activeMatch: "^/SSM/$",
       },
     ],
   },
