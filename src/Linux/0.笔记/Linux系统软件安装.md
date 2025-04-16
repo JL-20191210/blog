@@ -3174,17 +3174,248 @@ systemctl enable grafana-server
 
 默认账户密码：admin/admin
 
+# 文件共享NFS安装
+
+## 安装
+
+### 在线安装
+
+#### **在服务器端安装 NFS**
+首先，在需要作为 NFS 服务器的机器上安装 NFS 服务：
+
+- **CentOS / RHEL 系列**：
+  ```bash
+  sudo yum install nfs-utils -y
+  ```
+
+- **Ubuntu / Debian 系列**：
+  ```bash
+  sudo apt update
+  sudo apt install nfs-kernel-server -y
+  ```
+
+#### **在客户端安装 NFS**
+如果客户端也需要挂载共享目录，则需要安装 NFS 客户端：
+
+- **CentOS / RHEL 系列**：
+  ```bash
+  sudo yum install nfs-utils -y
+  ```
+
+- **Ubuntu / Debian 系列**：
+  ```##bash
+  sudo apt update
+  sudo apt install nfs-common -y
+  ```
+
+#### 安装脚本
+
+```bash
+#!/bin/bash
+stty erase ^H
+# 检查当前用户是否为 root
+if [ "$(id -u)" -ne 0 ]; then
+  echo "该脚本需要 root 权限，请使用 sudo 或以 root 用户运行脚本。"
+  exit 1
+fi
+
+# 提示用户选择操作系统
+echo "请选择操作系统："
+echo "1) CentOS/RHEL"
+echo "2) Ubuntu/Debian"
+read -p "请输入操作系统的选择（1或2）: " os_choice
+
+# 安装 NFS 服务和客户端
+if [ "$os_choice" -eq 1 ]; then
+  # CentOS/RHEL 系列
+  echo "正在安装 NFS 服务和客户端（CentOS/RHEL）..."
+  yum install -y nfs-utils
+elif [ "$os_choice" -eq 2 ]; then
+  # Ubuntu/Debian 系列
+  echo "正在安装 NFS 服务和客户端（Ubuntu/Debian）..."
+  apt update
+  apt install -y nfs-kernel-server nfs-common
+else
+  echo "无效选择！退出脚本。"
+  exit 1
+fi
+
+# 配置 NFS 共享目录
+echo "请输入要共享的目录路径（如：/mnt/nfs_share）: "
+read share_dir
+
+# 检查目录是否存在
+if [ ! -d "$share_dir" ]; then
+  echo "目录 $share_dir 不存在，正在创建该目录..."
+  mkdir -p "$share_dir"
+  chmod 755 "$share_dir"
+fi
+
+# 获取客户端 IP 地址或子网
+echo "请输入允许访问 NFS 共享的客户端 IP 地址或子网（例如：192.168.1.0/24）: "
+read client_ip
+
+# 配置 NFS 共享
+echo "正在配置 NFS 共享目录..."
+if [ "$os_choice" -eq 1 ]; then
+  echo "$share_dir $client_ip(rw,sync,no_subtree_check)" >> /etc/exports
+elif [ "$os_choice" -eq 2 ]; then
+  echo "$share_dir $client_ip(rw,sync,no_subtree_check)" >> /etc/exports
+fi
+
+# 启动 NFS 服务
+echo "正在启动 NFS 服务..."
+if [ "$os_choice" -eq 1 ]; then
+  systemctl start nfs-server
+  systemctl enable nfs-server
+elif [ "$os_choice" -eq 2 ]; then
+  systemctl start nfs-kernel-server
+  systemctl enable nfs-kernel-server
+fi
+
+# 导出共享目录
+echo "正在导出共享目录..."
+exportfs -a
+
+# 配置防火墙（如果有）
+echo "是否启用防火墙？（y/n）"
+read firewall_enable
+
+if [ "$firewall_enable" == "y" ]; then
+  if [ "$os_choice" -eq 1 ]; then
+    firewall-cmd --add-service=nfs --permanent
+    firewall-cmd --reload
+  elif [ "$os_choice" -eq 2 ]; then
+    ufw allow from "$client_ip" to any port nfs
+    ufw reload
+  fi
+fi
+
+# 显示配置完成信息
+echo "NFS 服务器配置完成！"
+
+# 提示客户端挂载命令
+echo "在客户端运行以下命令挂载共享目录："
+echo "sudo mount -t nfs <NFS_SERVER_IP>:$share_dir /mnt/nfs_client"
+
+# 可选：自动挂载
+echo "是否在客户端开机自动挂载？（y/n）"
+read auto_mount
+
+if [ "$auto_mount" == "y" ]; then
+  echo "请输入客户端的挂载点（如：/mnt/nfs_client）: "
+  read client_mount_point
+  echo "<NFS_SERVER_IP>:$share_dir $client_mount_point nfs defaults 0 0" >> /etc/fstab
+  echo "自动挂载已配置完成！"
+fi
+
+echo "NFS 服务配置完成，祝您使用愉快！"
+```
 
 
 
+## 配置
 
+**配置 NFS 共享目录**
 
+在 NFS 服务器上，你需要选择一个目录来共享，并在配置文件中进行设置。
 
+#### **创建共享目录**
+```bash
+sudo mkdir /mnt/nfs_share
+sudo chown -R nfsnobody:nfsnobody /mnt/nfs_share
+sudo chmod 755 /mnt/nfs_share
+```
 
+#### **配置 NFS 导出文件**
+编辑 `/etc/exports` 文件，添加共享目录和允许访问的客户端。你可以使用 IP 地址或子网来限制访问。
 
+```bash
+sudo vi /etc/exports
+```
 
+例如，要共享 `/mnt/nfs_share` 目录给 192.168.1.0/24 网络上的所有机器，配置如下：
+```
+/mnt/nfs_share 192.168.1.0/24(rw,sync,no_subtree_check)
+```
 
+- `rw`：允许读写访问。
+- `sync`：数据同步写入。
+- `no_subtree_check`：不检查子目录的权限。
 
+#### **应用配置**
+执行以下命令使配置生效：
+```bash
+sudo exportfs -a
+```
+
+## **启动 NFS 服务**
+
+在服务器端启动 NFS 服务并设置为开机自启动：
+
+- **CentOS / RHEL 系列**：
+  ```bash
+  sudo systemctl start nfs-server
+  sudo systemctl enable nfs-server
+  ```
+
+- **Ubuntu / Debian 系列**：
+  ```bash
+  sudo systemctl start nfs-kernel-server
+  sudo systemctl enable nfs-kernel-server
+  ```
+
+## **配置防火墙（如果启用了防火墙）**
+
+如果服务器上启用了防火墙，你需要允许 NFS 服务通过防火墙。
+
+- **CentOS / RHEL 系列**（使用 firewalld）：
+  ```bash
+  sudo firewall-cmd --add-service=nfs --permanent
+  sudo firewall-cmd --reload
+  ```
+
+- **Ubuntu / Debian 系列**（使用 UFW）：
+  ```bash
+  sudo ufw allow from 192.168.1.0/24 to any port nfs
+  sudo ufw reload
+  ```
+
+## **在客户端挂载 NFS 共享目录**
+
+在客户端，首先创建一个挂载点，然后使用 `mount` 命令挂载共享的目录。
+
+```bash
+sudo mkdir /mnt/nfs_client
+sudo mount -t nfs <NFS_SERVER_IP>:/mnt/nfs_share /mnt/nfs_client
+```
+
+其中 `<NFS_SERVER_IP>` 替换为实际的 NFS 服务器 IP 地址。
+
+## **自动挂载（可选）**
+
+如果希望在客户端重启时自动挂载共享目录，可以将挂载信息添加到 `/etc/fstab` 文件中。
+
+```bash
+sudo vi /etc/fstab
+```
+
+添加以下内容：
+```
+<NFS_SERVER_IP>:/mnt/nfs_share  /mnt/nfs_client  nfs  defaults  0  0
+```
+
+## **验证 NFS 安装**
+
+- 在客户端查看挂载情况：
+  ```bash
+  mount | grep nfs
+  ```
+
+- 在服务器端查看共享目录：
+  ```bash
+  sudo exportfs -v
+  ```
 
 
 

@@ -293,7 +293,7 @@ public class UserController {
 **注意事项**
 
 * SpringMVC是基于Spring的，在pom.xml只导入了`spring-webmvc`jar包的原因是它会自动依赖spring相关坐标
-* AbstractDispatcherServletInitializer类是SpringMVC提供的快速初始化Web3.0容器的抽象类
+* **AbstractDispatcherServletInitializer**类是SpringMVC提供的快速初始化Web3.0容器的抽象类
 * AbstractDispatcherServletInitializer提供了三个接口方法供用户实现
   * createServletApplicationContext方法，创建Servlet容器时，加载SpringMVC对应的bean并放入WebApplicationContext对象范围中，而WebApplicationContext的作用范围为ServletContext范围，即整个web容器范围
   * getServletMappings方法，设定SpringMVC对应的请求映射路径，即SpringMVC拦截哪些请求
@@ -651,7 +651,7 @@ public class App{
 * Spring配置类扫描的包是`com.itheima`
 * SpringMVC的配置类，`SpringMvcConfig`上有一个@Configuration注解，也会被Spring扫描到
 * SpringMvcConfig上又有一个@ComponentScan，把controller类又给扫描进来了
-* 所以如果不把@ComponentScan注释掉，Spring配置类将Controller排除，但是因为扫描到SpringMVC的配置类，又将其加载回来，演示的效果就出不来
+* 所以如果不把@ComponentScan注释掉，Spring配置类将Controller排除，但是因为扫描到SpringMVC的配置类，又将其加载回来，`演示的效果就出不来`
 * 解决方案，也简单，把SpringMVC的配置类移出Spring配置类的扫描范围即可。
 
 最后一个问题，有了Spring的配置类，要想在tomcat服务器启动将其加载，我们需要修改ServletContainersInitConfig
@@ -847,7 +847,7 @@ public class ServletContainersInitConfig extends AbstractAnnotationConfigDispatc
       
       @RequestMapping("/delete")
       @ResponseBody
-      public String save(){
+      public String delete(){
           System.out.println("user delete ...");
           return "{'module':'user delete'}";
       }
@@ -946,7 +946,7 @@ public class UserController {
     
     @RequestMapping("/delete")
     @ResponseBody
-    public String save(){
+    public String delete(){
         System.out.println("user delete ...");
         return "{'module':'user delete'}";
     }
@@ -1281,7 +1281,7 @@ public String commonParamDifferentName(String userName , int age){
 ```java
 @RequestMapping("/commonParamDifferentName")
     @ResponseBody
-    public String commonParamDifferentName(@RequestPaam("name") String userName , int age){
+    public String commonParamDifferentName(@RequestParam("name") String userName , int age){
         System.out.println("普通参数传递 userName ==> "+userName);
         System.out.println("普通参数传递 age ==> "+age);
         return "{'module':'common param different name'}";
@@ -1639,8 +1639,8 @@ SpringMVC接收JSON数据的实现步骤为:
 ```java
 @RequestMapping("/dataParam")
 @ResponseBody
-public String dataParam(Date date)
-    System.out.println("参数传递 date ==> "+date);
+public String dataParam(Date date) {
+    System.out.println("参数传递 date ==> " + date);
     return "{'module':'data param'}";
 }
 ```
@@ -1672,8 +1672,9 @@ public String dataParam(Date date)
 ```java
 @RequestMapping("/dataParam")
 @ResponseBody
-public String dataParam(Date date,Date date1)
-    System.out.println("参数传递 date ==> "+date);
+public String dataParam(Date date, Date date1) {
+    System.out.println("参数传递 date ==> " + date);
+    System.out.println("参数传递 date1 ==> " + date1);
     return "{'module':'data param'}";
 }
 ```
@@ -1717,11 +1718,11 @@ public String dataParam(Date date,
 @RequestMapping("/dataParam")
 @ResponseBody
 public String dataParam(Date date,
-                        @DateTimeFormat(pattern="yyyy-MM-dd") Date date1,
-                        @DateTimeFormat(pattern="yyyy/MM/dd HH:mm:ss") Date date2)
-    System.out.println("参数传递 date ==> "+date);
-	System.out.println("参数传递 date1(yyyy-MM-dd) ==> "+date1);
-	System.out.println("参数传递 date2(yyyy/MM/dd HH:mm:ss) ==> "+date2);
+                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date date1,
+                        @DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss") Date date2) {
+    System.out.println("参数传递 date ==> " + date);
+    System.out.println("参数传递 date1(yyyy-MM-dd) ==> " + date1);
+    System.out.println("参数传递 date2(yyyy/MM/dd HH:mm:ss) ==> " + date2);
     return "{'module':'data param'}";
 }
 ```

@@ -324,7 +324,9 @@ public class MyAdvice {
 }
 ```
 
-#### 步骤7:开启注解格式AOP功能
+#### :fire:步骤7:开启注解格式AOP功能
+
+**@EnableAspectJAutoProxy**
 
 ```java
 @Configuration
@@ -2557,7 +2559,7 @@ public class SpringConfig {
 
 ==注意:==
 
-目前的事务管理是基于`DataSourceTransactionManager`和`SqlSessionFactoryBean`使用的是同一个数据源。
+:fire:目前的事务管理是基于`DataSourceTransactionManager`和`SqlSessionFactoryBean`使用的是同一个数据源。
 
 ### 6.3 Spring事务属性
 
@@ -2616,10 +2618,10 @@ public class SpringConfig {
       
       }
       ```
-      
+  
 * 出现这个问题的原因是，Spring的事务只会对`Error异常`和`RuntimeException异常`及其子类进行事务回顾，其他的异常类型是不会回滚的，对应IOException不符合上述条件所以不回滚
       
-    * 此时就可以使用rollbackFor属性来设置出现IOException异常不回滚
+    * 此时就可以使用rollbackFor属性来设置出现IOException异常回滚
     
       ```java
       @Service
@@ -2772,7 +2774,7 @@ public class AccountServiceImpl implements AccountService {
 
 要想解决这个问题，就需要用到事务传播行为，所谓的事务传播行为指的是:
 
-事务传播行为：事务协调员对事务管理员所携带事务的处理态度。
+事务传播行为：事务协调员TC对事务管理员TM所携带事务的处理态度。
 
 具体如何解决，就需要用到之前我们没有说的`propagation属性`。
 
