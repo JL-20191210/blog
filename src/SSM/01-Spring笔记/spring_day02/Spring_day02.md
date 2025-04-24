@@ -1,10 +1,11 @@
 ---
-icon: pen-to-square
-date: 2025-04-07
+icon: fa-solid fa-leaf
+date: 2025-04-25
 category:
   - Spring
 tag:
   - 讲义
+  - 阅读完毕
 ---
 
 ## Spring_day02

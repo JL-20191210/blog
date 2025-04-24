@@ -1,4 +1,14 @@
-## MyBatisPlus
+---
+icon: fa-solid fa-leaf
+date: 2025-04-25
+category:
+  - MyBatis
+  - Spring
+tag:
+  - 讲义
+---
+
+# MyBatisPlus
 
 **今日目标**
 

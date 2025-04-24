@@ -1,4 +1,14 @@
-## SpringMVC_day02
+---
+icon: fa-solid fa-leaf
+date: 2025-04-25
+category:
+  - Spring
+tag:
+  - 讲义
+  - 阅读完毕
+---
+
+# SpringMVC_day02
 
 **今日内容**
 

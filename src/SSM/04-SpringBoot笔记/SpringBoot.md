@@ -1,4 +1,13 @@
-## SpringBoot
+---
+icon: fa-solid fa-leaf
+date: 2025-04-25
+category:
+  - Spring
+tag:
+  - 讲义
+---
+
+# SpringBoot
 
 **今日目标：**
 

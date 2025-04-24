@@ -1,4 +1,14 @@
-## SpringMVC_day01
+---
+icon: fa-solid fa-leaf
+date: 2025-04-25
+category:
+  - Spring
+tag:
+  - 讲义
+  - 阅读完毕
+---
+
+# SpringMVC_day01
 
 **今日内容**
 
@@ -1975,7 +1985,7 @@ public class UserController {
 public class UserController {
     
    	@RequestMapping("/toText")
-	//注意此处该注解就不能省略，如果省略了,会把response text当前页面名称去查找，如果没有回报404错误
+	//注意此处该注解就不能省略，如果省略了,会把response text当成页面名称去查找，如果没有回报404错误
     @ResponseBody
     public String toText(){
         System.out.println("返回纯文本数据");
