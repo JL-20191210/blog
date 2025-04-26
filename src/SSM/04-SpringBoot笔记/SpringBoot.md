@@ -5,6 +5,7 @@ category:
   - Spring
 tag:
   - 讲义
+  - 阅读完毕
 ---
 
 # SpringBoot
@@ -319,9 +320,9 @@ jar -jar springboot_01_quickstart-0.0.1-SNAPSHOT.jar
 
 `SpringBoot` 程序优点恰巧就是针对 `Spring` 的缺点
 
-* 自动配置。这个是用来解决 `Spring` 程序配置繁琐的问题
-* 起步依赖。这个是用来解决 `Spring` 程序依赖设置繁琐的问题
-* 辅助功能（内置服务器,...）。我们在启动 `SpringBoot` 程序时既没有使用本地的 `tomcat` 也没有使用 `tomcat` 插件，而是使用 `SpringBoot` 内置的服务器。
+* **自动配置**。这个是用来解决 `Spring` 程序配置繁琐的问题
+* **起步依赖**。这个是用来解决 `Spring` 程序依赖设置繁琐的问题
+* **辅助功能**（内置服务器,...）。我们在启动 `SpringBoot` 程序时既没有使用本地的 `tomcat` 也没有使用 `tomcat` 插件，而是使用 `SpringBoot` 内置的服务器。
 
 接下来我们来说一下 `SpringBoot` 的起步依赖
 
