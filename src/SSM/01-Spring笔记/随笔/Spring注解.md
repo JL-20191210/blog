@@ -37,3 +37,38 @@
 :deciduous_tree: ` @Transactional(rollbackFor = {IOException.class})`：在 Spring 的事务管理中，遇到 `IOException` 异常时，事务会进行回滚。默认Spring的事务只会对`Error异常`和`RuntimeException异常`及其子类进行事务回滚，其他的异常类型是不会回滚的
 
  :deciduous_tree:`@Transactional(propagation = Propagation.REQUIRES_NEW)`:propagation设置事务属性：传播行为设置为当前操作需要新事务
+
+## Web
+
+### @ExceptionHandler
+
+| 名称 | @ExceptionHandler                                            |
+| ---- | ------------------------------------------------------------ |
+| 类型 | ==方法注解==                                                 |
+| 位置 | 专用于异常处理的控制器方法上方                               |
+| 作用 | 设置指定异常的处理方案，功能等同于控制器方法，<br/>出现异常后终止原始控制器执行,并转入当前方法执行 |
+
+ Spring 框架中用来处理控制器（Controller）方法抛出的异常的注解。它允许你指定一个方法来处理特定类型的异常，并且可以自定义返回的错误信息或响应
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleGlobalException(Exception e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "errorPage";
+    }
+}
+```
+
+:fire:@RestControllerAdvice包含@ControllerAdvice
+
+### @RestControllerAdvice
+
+| 名称 | @RestControllerAdvice              |
+| ---- | ---------------------------------- |
+| 类型 | ==类注解==                         |
+| 位置 | Rest风格开发的控制器增强类定义上方 |
+| 作用 | 为Rest风格开发的控制器类做增强     |
