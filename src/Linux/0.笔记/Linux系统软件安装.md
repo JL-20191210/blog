@@ -3419,17 +3419,131 @@ sudo vi /etc/fstab
 
 
 
+# Nexus安装
 
+## 安装
 
+### 1. 准备工作
+确保你的系统已安装以下软件：
+- **Java 8 或更高版本**：Nexus Repository Manager 需要 Java 运行。
+- **curl 或 wget**：用于下载 Nexus 安装包。
 
+### 2. 下载和解压 Nexus 安装包
+如果你还没下载，可以使用 `wget` 下载 Nexus 安装包：
+```bash
+wget https://download.sonatype.com/nexus/3/nexus-3.79.1-04-linux-x86_64.tar.gz
+```
 
+然后，解压该文件：
+```bash
+tar -zxvf nexus-3.79.1-04-linux-x86_64.tar.gz
+```
 
+### 3. 移动到目标目录（可选）
 
+为了更方便的管理，建议将解压后的文件移动到 `/opt` 目录：
+```bash
+sudo mv nexus-3.79.1-04 /opt/nexus
+```
 
+## 配置
 
+### 4. 创建一个 Nexus 用户（可选）
 
+为了安全起见，建议使用一个非 root 用户运行 Nexus。你可以通过以下命令创建一个新的用户：
+```bash
+sudo useradd -r -m -U -d /opt/nexus -s /bin/bash nexus
+```
 
+### 5. 配置 Nexus 端口（可选）
+Nexus 默认使用 8081 端口。如果你需要更改该端口，可以编辑 `nexus-3.79.1-04/conf/nexus.properties` 文件：
+```bash
+sudo nano /opt/nexus/conf/nexus.properties
+```
+找到并修改 `application-port`：
+```properties
+application-port=8081
+```
 
+### 6. 修改 JVM 内存设置
+
+在 `nexus.vmoptions` 或 `nexus.conf` 文件中，查找包含 `-Xms`（初始内存大小）和 `-Xmx`（最大内存大小）设置的行。这两个参数决定了 Java 虚拟机使用的最小内存和最大内存。
+
+```
+bash复制代码-Xms512m
+-Xmx2g
+```
+
+- `-Xms`：指定初始堆内存大小（例如 `512m`，表示 512 MB）。
+- `-Xmx`：指定最大堆内存大小（例如 `2g`，表示 2 GB）。
+
+## 启动
+
+### 7. 启动 Nexus
+
+进入 `nexus` 目录并启动 Nexus：
+```bash
+cd /opt/nexus/bin
+./nexus start
+```
+
+Nexus 会在后台启动并监听默认端口（8081，除非你修改了端口）。
+
+### 8. 配置 Nexus 为后台服务（可选）
+为了让 Nexus 在系统启动时自动启动，可以使用 `systemd` 创建服务。
+
+1. 创建 systemd 服务文件：
+   ```bash
+   sudo nano /etc/systemd/system/nexus.service
+   ```
+
+2. 在文件中添加以下内容：
+   ```ini
+   [Unit]
+   Description=Nexus Repository Manager
+   After=network.target
+   
+   [Service]
+   Type=forking
+   User=nexus
+   Group=nexus
+   ExecStart=/opt/nexus/bin/nexus start
+   ExecStop=/opt/nexus/bin/nexus stop
+   LimitNOFILE=65536
+   
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. 重新加载 systemd 配置并启动 Nexus 服务：
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl enable nexus
+   sudo systemctl start nexus
+   ```
+
+### 9. 访问 Nexus
+安装完成后，可以通过浏览器访问 Nexus Repository Manager：
+```
+http://<your-server-ip>:8081
+```
+
+### 10. 初始登录
+- 默认的管理员账号是 `admin`，密码存储在 `/opt/nexus/sonatype-work/nexus3/admin.password` 文件中。
+- 登录后，可以设置管理员密码并开始配置你的 Nexus 仓库。
+
+## 停止 
+
+如果需要停止 Nexus 服务，可以执行以下命令：
+```bash
+cd /opt/nexus/bin
+./nexus stop
+```
+
+或者，如果你使用了 `systemd` 服务：
+```bash
+sudo systemctl stop nexus
+```
 
 
 
