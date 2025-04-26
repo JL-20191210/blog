@@ -6,6 +6,7 @@ category:
   - Spring
 tag:
   - 讲义
+  - 阅读完毕
 ---
 
 # MyBatisPlus
@@ -2248,6 +2249,8 @@ UPDATE tbl_user SET ==deleted===1 where id = ? AND ==deleted===0
 | 相关属性 | value：逻辑未删除值<br/>delval:逻辑删除值 |
 
 ### 4.4 乐观锁
+
+:dolphin:乐观锁假设并发冲突较少，通过版本号或时间戳检测冲突，而悲观锁则假设冲突较多，直接对数据加锁以避免冲突
 
 #### 4.4.1 概念
 

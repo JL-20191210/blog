@@ -15,7 +15,7 @@ tag:
 > * 掌握基于SpringBoot框架的程序开发步骤
 > * 熟练使用SpringBoot配置信息修改服务器配置
 > * 基于SpringBoot的完成SSM整合项目开发
-
+<!-- more -->
 ## 1，SpringBoot简介
 
 `SpringBoot` 是由 `Pivotal` 团队提供的全新框架，其设计目的是用来==简化== `Spring` 应用的==初始搭建==以及==开发过程==。
