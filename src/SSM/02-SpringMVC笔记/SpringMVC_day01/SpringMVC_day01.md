@@ -23,6 +23,7 @@ SpringMVC是隶属于Spring框架的一部分，主要是用来进行Web开发�
 
 对于SpringMVC我们主要学习如下内容:
 
+<!-- more -->
 * SpringMVC简介
 * ==请求与响应==
 * ==REST风格==

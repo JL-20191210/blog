@@ -8,7 +8,7 @@ tag:
   - 阅读完毕
 ---
 
-## Spring_day03
+# Spring_day03
 
 **今日目标**
 
@@ -17,6 +17,7 @@ tag:
 > * 能运用AOP相关知识完成对应的案例编写
 > * 重点掌握Spring的声明式事务管理
 
+<!-- more -->
 ## 1，AOP简介
 
 前面我们在介绍Spring的时候说过，Spring有两个核心的概念，一个是`IOC/DI`，一个是`AOP`。
