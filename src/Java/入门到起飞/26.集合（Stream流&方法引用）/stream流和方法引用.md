@@ -285,7 +285,7 @@ public class ImmutableDemo4 {
 
   - Collection体系集合
 
-    使用默认方法stream()生成流， default Stream<E> stream()
+    使用默认方法stream()生成流， `default Stream<E> stream()`
 
   - Map体系集合
 
@@ -338,11 +338,11 @@ public class ImmutableDemo4 {
 
   | 方法名                                      | 说明                                       |
   | ---------------------------------------- | ---------------------------------------- |
-  | Stream<T> filter(Predicate predicate)    | 用于对流中的数据进行过滤                             |
-  | Stream<T> limit(long maxSize)            | 返回此流中的元素组成的流，截取前指定参数个数的数据                |
-  | Stream<T> skip(long n)                   | 跳过指定参数个数的数据，返回由该流的剩余元素组成的流               |
-  | static <T> Stream<T> concat(Stream a, Stream b) | 合并a和b两个流为一个流                             |
-  | Stream<T> distinct()                     | 返回由该流的不同元素（根据Object.equals(Object) ）组成的流 |
+  | `Stream<T> filter(Predicate predicate)`    | 用于对流中的数据进行过滤                             |
+  | `Stream<T> limit(long maxSize) `           | 返回此流中的元素组成的流，截取前指定参数个数的数据                |
+  | `Stream<T> skip(long n) `                  | 跳过指定参数个数的数据，返回由该流的剩余元素组成的流               |
+  | `static <T> Stream<T> concat(Stream a, Stream b)` | 合并a和b两个流为一个流                             |
+  | `Stream<T> distinct()`                    | 返回由该流的不同元素（根据Object.equals(Object) ）组成的流 |
 
 - filter代码演示
 
@@ -529,9 +529,9 @@ public class ImmutableDemo4 {
 
   | 方法名                                                       | 说明                   |
   | ------------------------------------------------------------ | ---------------------- |
-  | public static <T> Collector toList()                         | 把元素收集到List集合中 |
-  | public static <T> Collector toSet()                          | 把元素收集到Set集合中  |
-  | public static  Collector toMap(Function keyMapper,Function valueMapper) | 把元素收集到Map集合中  |
+  |`public static <T> Collector toList()  `                       | 把元素收集到List集合中 |
+  | `public static <T> Collector toSet()`                          | 把元素收集到Set集合中  |
+  | `public static  Collector toMap(Function keyMapper,Function valueMapper)` | 把元素收集到Map集合中  |
 
 - 代码演示
 
