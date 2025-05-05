@@ -85,20 +85,6 @@ export default navbar([
     prefix: "/SpringCloud/",
     children: [
       {
-        text: "Nacos",
-        link: "/SpringCloud/Nacos/",
-        icon: "fa-solid fa-cloud",
-        // 激活导航栏
-        activeMatch: "^/SpringCloud/$",
-      },
-      {
-        text: "ES",
-        link: "/SpringCloud/ES/",
-        icon: "fa-brands fa-searchengin",
-        // 激活导航栏
-        activeMatch: "^/SpringCloud/$",
-      },
-      {
         text: "高级篇",
         link: "/SpringCloud/高级/",
         icon: "fa-brands fa-web-awesome",
