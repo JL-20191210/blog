@@ -1,10 +1,10 @@
-## 1.不可变集合
+# 1.不可变集合
 
-### 1.1 什么是不可变集合
+## 1.1 什么是不可变集合
 
 ​	是一个长度不可变，内容也无法修改的集合
 
-### 1.2 使用场景
+## 1.2 使用场景
 
 ​	如果某个数据不能被修改，把它防御性地拷贝到不可变集合中是个很好的实践。
 
@@ -22,13 +22,13 @@
 
 3，用代码获取的操作系统硬件信息，也是不能被修改的
 
-### 1.3 不可变集合分类
+## 1.3 不可变集合分类
 
 * 不可变的list集合
 * 不可变的set集合
 * 不可变的map集合
 
-### 1.4 不可变的list集合
+## 1.4 不可变的list集合
 
 ```java
 public class ImmutableDemo1 {
@@ -75,7 +75,7 @@ public class ImmutableDemo1 {
 }
 ```
 
-### 1.5 不可变的Set集合
+## 1.5 不可变的Set集合
 
 ```java
 public class ImmutableDemo2 {
@@ -110,9 +110,9 @@ public class ImmutableDemo2 {
 }
 ```
 
-### 1.6 不可变的Map集合
+## 1.6 不可变的Map集合
 
-#### 1.6.1：键值对个数小于等于10
+## 1.6.1：键值对个数小于等于10
 
 ```java
 public class ImmutableDemo3 {
@@ -152,7 +152,7 @@ public class ImmutableDemo3 {
 }
 ```
 
-#### 1.6.2：键值对个数大于10
+## 1.6.2：键值对个数大于10
 
 ```java
 public class ImmutableDemo4 {
@@ -199,9 +199,9 @@ public class ImmutableDemo4 {
 }
 ```
 
-## 2.Stream流
+# 2.Stream流
 
-### 2.1体验Stream流【理解】
+## 2.1体验Stream流【理解】
 
 - 案例需求
 
@@ -264,7 +264,7 @@ public class ImmutableDemo4 {
   - Stream流把真正的函数式编程风格引入到Java中
   - 代码简洁
 
-### 2.2Stream流的常见生成方式【应用】
+## 2.2Stream流的常见生成方式【应用】
 
 - Stream流的思想
 
@@ -328,7 +328,7 @@ public class ImmutableDemo4 {
   }
   ```
 
-### 2.3Stream流中间操作方法【应用】
+## 2.3Stream流中间操作方法【应用】
 
 - 概念
 
@@ -449,7 +449,7 @@ public class ImmutableDemo4 {
   }
   ```
 
-### 2.4Stream流终结操作方法【应用】
+## 2.4Stream流终结操作方法【应用】
 
 - 概念
 
@@ -513,7 +513,7 @@ public class ImmutableDemo4 {
   }
   ```
 
-### 2.5Stream流的收集操作【应用】
+## 2.5Stream流的收集操作【应用】
 
 - 概念
 
@@ -604,7 +604,7 @@ public class ImmutableDemo4 {
   }
   ```
 
-### 2.6Stream流综合练习【应用】
+## 2.6Stream流综合练习【应用】
 
 - 案例需求
 
@@ -678,9 +678,9 @@ public class ImmutableDemo4 {
   }
   ```
 
-## 3.方法引用
+# 3.方法引用
 
-### 3.1体验方法引用【理解】
+## 3.1体验方法引用【理解】
 
 - 方法引用的出现原因
 
@@ -720,7 +720,7 @@ public class ImmutableDemo4 {
   
   ```
 
-### 3.2方法引用符【理解】
+## 3.2方法引用符【理解】
 
 - 方法引用符
 
@@ -732,7 +732,7 @@ public class ImmutableDemo4 {
   - 如果使用方法引用，也是同样可以根据上下文进行推导
   - 方法引用是Lambda的孪生兄弟
 
-### 3.3引用类方法【应用】
+## 3.3引用类方法【应用】
 
 ​	引用类方法，其实就是引用类的静态方法
 
@@ -782,7 +782,7 @@ public class ImmutableDemo4 {
 
   Lambda表达式被类方法替代的时候，它的形式参数全部传递给静态方法作为参数
 
-### 3.4引用对象的实例方法【应用】
+## 3.4引用对象的实例方法【应用】
 
 ​	引用对象的实例方法，其实就引用类中的成员方法
 
@@ -849,7 +849,7 @@ public class ImmutableDemo4 {
 
   Lambda表达式被对象的实例方法替代的时候，它的形式参数全部传递给该方法作为参数
 
-### 3.5引用类的实例方法【应用】
+## 3.5引用类的实例方法【应用】
 
 ​	引用类的实例方法，其实就是引用类中的成员方法
 
@@ -906,7 +906,7 @@ public class ImmutableDemo4 {
   ​    第一个参数作为调用者
   ​    后面的参数全部传递给该方法作为参数
 
-### 3.6引用构造器【应用】
+## 3.6引用构造器【应用】
 
 ​	引用构造器，其实就是引用构造方法
 
