@@ -6,6 +6,7 @@ category:
   - Redis
 tag:
   - 讲义
+  - 阅读完毕
 ---
 # 实战篇Redis
 
@@ -1597,6 +1598,12 @@ public  Result createVoucherOrder(Long voucherId) {
 
 1、我们将服务启动两份，端口分别为8081和8082：
 
+```bash
+-Dserver.port=8082 //jvm覆盖原端口
+```
+
+
+
 ![1653373887844](.\Redis实战篇.assets\1653373887844.png)
 
 2、然后修改nginx的conf目录下的nginx.conf文件，配置反向代理和负载均衡：
@@ -1991,7 +1998,7 @@ public class RedissonConfig {
 
 ```java
 @Resource
-private RedissionClient redissonClient;
+private RedissonClient redissonClient;
 
 @Test
 void testRedisson() throws Exception{
@@ -2422,7 +2429,7 @@ private void init() {
             // 2.创建锁对象
             RLock redisLock = redissonClient.getLock("lock:order:" + userId);
             // 3.尝试获取锁
-            boolean isLock = redisLock.lock();
+            boolean isLock = redisLock.tryLock();
             // 4.判断是否获得锁成功
             if (!isLock) {
                 // 获取锁失败，直接返回失败或者重试
@@ -2625,12 +2632,19 @@ STREAM类型消息队列的XREAD命令特点：
 
 ![1653577801668](.\Redis实战篇.assets\1653577801668.png)
 
-创建消费者组：
-![1653577984924](.\Redis实战篇.assets\1653577984924.png)
-key：队列名称
-groupName：消费者组名称
-ID：起始ID标示，$代表队列中最后一个消息，0则代表队列中第一个消息
-MKSTREAM：队列不存在时自动创建队列
+### 创建消费者组：
+
+```bash
+XGROUP CREATE <stream> <groupname> <id> [MKSTREAM]
+```
+
+- `<stream>`：指定要创建消费者组的流（Stream）。
+- `<groupname>`：消费者组的名称。
+- `<id>`：消费者组的起始 ID，通常使用 `$` 来表示从流中的最新消息开始消费，或者使用 `0` 来从流的最早消息开始消费。
+- `[MKSTREAM]`：可选参数，表示如果流不存在则创建流。
+
+
+
 其它常见命令：
 
  **删除指定的消费者组**
@@ -2653,8 +2667,14 @@ XGROUP DELCONSUMER key groupname consumername
 
 从消费者组读取消息：
 
-```java
-XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]
+```bash
+XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREAMS key [key ...] ID [ID ...]1
+ 
+# 从流 stream.orders 中读取未被其他消费者处理的 1 条消息，使用消费者组 g1 和消费者 c1，并在没有新消息时阻塞等待最多2000毫秒。
+XREADGROUP GROUP g1 c1 COUNT 1 BLOCK 2000 STREAMS stream.orders >
+
+# 从流 stream.orders 中读取未被其他消费者处理的 1 条消息，使用消费者组 g1 和消费者 c1，一致等待直到新消息进入。
+XREADGROUP GROUP g1 c1 COUNT 1 BLOCK 0 STREAMS stream.orders >
 ```
 
 * group：消费组名称
@@ -2688,7 +2708,7 @@ XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREA
 
 * 创建一个Stream类型的消息队列，名为stream.orders
 * 修改之前的秒杀下单Lua脚本，在认定有抢购资格后，直接向stream.orders中添加消息，内容包含voucherId、userId、orderId
-* 项目启动时，开启一个线程任务，尝试获取stream.orders中的消息，完成下单\
+* 项目启动时，开启一个线程任务，尝试获取stream.orders中的消息，完成下单
 
 修改lua表达式,新增3.6 
 
@@ -2824,7 +2844,7 @@ public class BlogController {
     public Result saveBlog(@RequestBody Blog blog) {
         //获取登录用户
         UserDTO user = UserHolder.getUser();
-        blog.setUpdateTime(user.getId());
+        blog.setUserId(user.getId());
         //保存探店博文
         blogService.saveBlog(blog);
         //返回id

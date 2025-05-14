@@ -6,6 +6,7 @@ category:
   - Redis
 tag:
   - 讲义
+  - 阅读完毕
 
 ---
 
