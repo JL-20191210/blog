@@ -52,6 +52,7 @@ export default hopeTheme({
   encrypt: {
     config: {
       "/demo/encrypt.html": ["1234"],
+      "/blog/学习记录.html": ["YINSHI9981@github"],
     },
   },
 
