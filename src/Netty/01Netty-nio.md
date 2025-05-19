@@ -7,10 +7,11 @@ category:
 tag:
   - 教程
 ---
-# NIO 基础
->non-blocking io 非阻塞 IO
 
-<!-- more -->
+# 一. NIO 基础
+
+non-blocking io 非阻塞 IO
+
 ## 1. 三大组件
 
 ### 1.1 Channel & Buffer
@@ -34,7 +35,7 @@ buffer --> channel
 
 buffer 则用来缓冲读写数据，常见的 buffer 有
 
-* **ByteBuffer**
+* ByteBuffer
   * MappedByteBuffer
   * DirectByteBuffer
   * HeapByteBuffer
@@ -61,7 +62,6 @@ t2(thread) --> s2(socket2)
 t3(thread) --> s3(socket3)
 end
 ```
-
 #### ⚠️ 多线程版缺点
 
 * 内存占用高
@@ -85,7 +85,6 @@ t4(thread) -.-> s6(socket3)
 t5(thread) -.-> s7(socket4)
 end
 ```
-
 #### ⚠️ 线程池版缺点
 
 * 阻塞模式下，线程仅能处理一个 socket 连接
@@ -206,27 +205,27 @@ ByteBuffer 有以下重要属性
 
 一开始
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0021-20240914172439955.png)
+![](img/0021.png)
 
 写模式下，position 是写入位置，limit 等于容量，下图表示写入了 4 个字节后的状态
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0018.png)
+![](img/0018.png)
 
 flip 动作发生后，position 切换为读取位置，limit 切换为读取限制
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0019.png)
+![](img/0019.png)
 
 读取 4 个字节后，状态
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0020.png)
+![](img/0020.png)
 
 clear 动作发生后，状态
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0021.png)
+![](img/0021.png)
 
 compact 方法，是把未读完的部分向前压缩，然后切换至写模式
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0022.png)
+![](img/0022.png)
 
 
 
@@ -1105,7 +1104,7 @@ System.out.println("waiting...");
 
 #### 非阻塞
 
-* 非阻塞模式下，相关方法都不会让线程暂停
+* 非阻塞模式下，相关方法都会不会让线程暂停
   * 在 ServerSocketChannel.accept 在没有连接建立时，会返回 null，继续运行
   * SocketChannel.read 在没有数据可读时，会返回 0，但线程不必阻塞，可以去执行其它 SocketChannel 的 read 或是去执行 ServerSocketChannel.accept 
   * 写数据时，线程只是等待数据写入 Channel 即可，无需等 Channel 通过网络把数据发送出去
@@ -1483,7 +1482,7 @@ ld�
 
 #### 处理消息的边界
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0023.png)
+![](img/0023.png)
 
 * 一种思路是固定消息长度，数据包大小一样，服务器按预定长度读取，缺点是浪费带宽
 * 另一种思路是按分隔符拆分，缺点是效率低
@@ -1983,31 +1982,31 @@ public class UdpClient {
 * 等待数据阶段
 * 复制数据阶段
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0023.png/0033.png)
+![](img/0033.png)
 
-* 阻塞 IO：只能处理一件事
+* 阻塞 IO
 
-  ![](http://81.70.62.114:19000/typora/0039.png)
+  ![](img/0039.png)
 
-* 非阻塞  IO：复制数据时也会阻塞，等待连接时无法读取数据
+* 非阻塞  IO
 
-  ![](http://blog.xiaoxiongmaococo.com:19000/typora/0035.png)
+  ![](img/0035.png)
 
-* 多路复用：单线程+selector，selector能处理多个事件。selector阻塞，read也阻塞
+* 多路复用
 
-  ![](http://blog.xiaoxiongmaococo.com:19000/typora/0038.png)
+  ![](img/0038.png)
 
 * 信号驱动
 
-* 异步 IO：
+* 异步 IO
 
-  ![](http://blog.xiaoxiongmaococo.com:19000/typora/0037.png)
+  ![](img/0037.png)
 
 * 阻塞 IO vs 多路复用
 
-  ![](http://blog.xiaoxiongmaococo.com:19000/typora/0034.png)
+  ![](img/0034.png)
 
-  ![](http://blog.xiaoxiongmaococo.com:19000/typora/0036.png)
+  ![](img/0036.png)
 
 #### 🔖 参考
 
@@ -2034,7 +2033,7 @@ socket.getOutputStream().write(buf);
 
 内部工作流程是这样的：
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0024.png)
+![](img/0024.png)
 
 1. java 本身并不具备 IO 读写能力，因此 read 方法调用后，要从 java 程序的**用户态**切换至**内核态**，去调用操作系统（Kernel）的读能力，将数据读入**内核缓冲区**。这期间用户线程阻塞，操作系统使用 DMA（Direct Memory Access）来实现文件读，其间也不会使用 cpu
 
@@ -2062,7 +2061,7 @@ socket.getOutputStream().write(buf);
 * ByteBuffer.allocate(10)  HeapByteBuffer 使用的还是 java 内存
 * ByteBuffer.allocateDirect(10)  DirectByteBuffer 使用的是操作系统内存
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0025.png)
+![](img/0025.png)
 
 大部分步骤与优化前相同，不再赘述。唯有一点：java 可以使用 DirectByteBuf 将堆外内存映射到 jvm 内存中来直接访问使用
 
@@ -2076,7 +2075,7 @@ socket.getOutputStream().write(buf);
 
 进一步优化（底层采用了 linux 2.1 后提供的 sendFile 方法），java 中对应着两个 channel 调用 transferTo/transferFrom 方法拷贝数据
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0026.png)
+![](img/0026.png)
 
 1. java 调用 transferTo 方法后，要从 java 程序的**用户态**切换至**内核态**，使用 DMA将数据读入**内核缓冲区**，不会使用 cpu
 2. 数据从**内核缓冲区**传输到 **socket 缓冲区**，cpu 会参与拷贝
@@ -2091,7 +2090,7 @@ socket.getOutputStream().write(buf);
 
 进一步优化（linux 2.4）
 
-![](http://blog.xiaoxiongmaococo.com:19000/typora/0027.png)
+![](img/0027.png)
 
 1. java 调用 transferTo 方法后，要从 java 程序的**用户态**切换至**内核态**，使用 DMA将数据读入**内核缓冲区**，不会使用 cpu
 2. 只会将一些 offset 和 length 信息拷入 **socket 缓冲区**，几乎无消耗
