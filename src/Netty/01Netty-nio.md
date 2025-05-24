@@ -1574,6 +1574,7 @@ public static void main(String[] args) throws IOException {
                         // 需要扩容
                         if (buffer.position() == buffer.limit()) {
                             ByteBuffer newBuffer = ByteBuffer.allocate(buffer.capacity() * 2);
+                            //buffer切换为读模式才能读取数据到newbuffer中
                             buffer.flip();
                             newBuffer.put(buffer); // 0123456789abcdef3333\n
                             key.attach(newBuffer);
