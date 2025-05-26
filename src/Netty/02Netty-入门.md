@@ -6,6 +6,7 @@ category:
   - Netty
 tag:
   - 教程
+  - 阅读完毕
 ---
 
 # 二. Netty 入门
@@ -443,8 +444,8 @@ static void invokeChannelRead(final AbstractChannelHandlerContext next, Object m
 }
 ```
 
-* 如果两个 handler 绑定的是同一个线程，那么就直接调用
-* 否则，把要调用的代码封装为一个任务对象，由下一个 handler 的线程来调用
+* :fire:如果两个 handler 绑定的是同一个线程，那么就直接调用
+* :fire:否则，把要调用的代码封装为一个任务对象，由下一个 handler 的线程来调用
 
 
 
@@ -1105,7 +1106,11 @@ new Bootstrap()
   * 3 处的 ctx.channel().write(msg) 如果改为 ctx.write(msg) 仅会打印 1 2 3，因为节点3 之前没有其它出站处理器了
   * 6 处的 ctx.write(msg, promise) 如果改为 ctx.channel().write(msg) 会打印 1 2 3 6 6 6... 因为 ctx.channel().write() 是从尾部开始查找，结果又是节点6 自己
 
-
+```java
+* ctx.fireChannelRead(msg);从当前位置向后找下一个入站处理器
+* ctx.channel().write(msg,promise);是Channel上的write，从Pipeline尾部开始往前找出站处理器
+* ctx.write(msg,promise);是context上的write，从当前位置向前找下一个出站处理器
+```
 
 图1 - 服务端 pipeline 触发的原始流程，图中数字代表了处理步骤的先后次序
 
@@ -1125,6 +1130,8 @@ log(buffer);
 ```
 
 上面代码创建了一个默认的 ByteBuf（池化基于直接内存的 ByteBuf），初始容量是 10
+
+:palm_tree:Netty中的ByteBuf能自动扩容
 
 输出
 
@@ -1177,7 +1184,7 @@ ByteBuf buffer = ByteBufAllocator.DEFAULT.directBuffer(10);
 * 有了池化，则可以重用池中 ByteBuf 实例，并且采用了与 jemalloc 类似的内存分配算法提升分配效率
 * 高并发时，池化功能更节约内存，减少内存溢出的可能
 
-池化功能是否开启，可以通过下面的系统环境变量来设置
+池化功能是否开启，可以通过下面的系统环境变 量来设置
 
 ```java
 -Dio.netty.allocator.type={unpooled|pooled}
@@ -1630,7 +1637,7 @@ System.out.println(ByteBufUtil.prettyHexDump(buf3));
 
 这种方法好不好？回答是不太好，因为进行了数据的内存复制操作
 
-
+:fire:这种方式改变了buf1和buf2的读指针
 
 方法2：
 
