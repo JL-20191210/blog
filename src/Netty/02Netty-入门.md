@@ -512,8 +512,6 @@ channel 的主要作用
 * write() 方法将数据写入
 * writeAndFlush() 方法将数据写入并刷出
 
-
-
 #### ChannelFuture
 
 这时刚才的客户端代码
