@@ -29,7 +29,7 @@
 
 ## 3️⃣ 多态在 Spring 中的应用场景
 
-- **多实现类 Bean 注入**：@Autowired + @Qualifier 或 List<Interface> 注入
+- **多实现类 Bean 注入**：@Autowired + @Qualifier 或 `List<Interface>` 注入
 - **策略模式场景**：如支付、消息推送，使用 ApplicationContext.getBeansOfType 结合接口实现
 - **自动装配 + 接口扩展**：依赖注入只面向接口编程，Spring 自动注入最合适实现类
 - **Controller 接口参数绑定的多态性**：通过继承/抽象类传参
