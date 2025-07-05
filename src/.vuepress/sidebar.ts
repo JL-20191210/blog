@@ -29,6 +29,7 @@ export default sidebar({
   "/JVM/":"structure",
   "/Vue/":"structure",
   "/Spring/":"structure",
+  "/SpringBooot/":"structure",
   "/SpringCloud/":"structure",
   "/Database/":"structure",
   "/Netty/":"structure",
