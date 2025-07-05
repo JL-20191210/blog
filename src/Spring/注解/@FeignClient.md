@@ -6,6 +6,7 @@ category:
 tag:
   - 注解
 ---
+# @FeignClient
 
 > `@FeignClient("coupon")` 注解用于声明一个 Feign 客户端，表示当前接口是一个远程服务的调用接口，通过 Feign 来实现 HTTP 请求的自动代理。`@FeignClient` 中的 `"coupon"` 表示目标服务的名称，Feign 会通过服务发现机制（如 Nacos、Eureka 等）找到该服务，并发起 HTTP 请求。
 <!-- more -->
