@@ -65,7 +65,7 @@ export default navbar([
       },
       {
         text: "SpringBoot",
-        link: "/Spring/README.md",
+        link: "/SpringBoot/README.md",
         icon: "fa-solid fa-leaf",
         // 仅在 `/zh/guide/` 激活
         activeMatch: "^/SpringBoot/$",

@@ -6,7 +6,7 @@ category:
 tag:
   - 注解
 ---
-# @EnableTransactionManagement 使用指南
+# @EnableTransactionManagement
 
 `@EnableTransactionManagement` 是 Spring 提供的注解，用于开启基于注解的事务管理功能。本文档将详细介绍其使用方法、最佳实践以及推荐的配置位置。
 

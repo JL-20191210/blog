@@ -1,4 +1,12 @@
-# @ConfigurationProperties 注解
+---
+icon: fa-solid fa-hashtag
+date: 2025-07-08
+category:
+  - SpringBoot
+tag:
+  - 注解
+---
+# @ConfigurationProperties
 
 在 Spring Boot 项目中，配置文件（如 `application.properties` 或 `application.yml`）承载着大量环境和业务相关的参数。如何优雅、类型安全地将这些配置映射到 Java 对象中，成为每个开发者必须掌握的技能。`@ConfigurationProperties` 正是解决这一需求的利器。
 

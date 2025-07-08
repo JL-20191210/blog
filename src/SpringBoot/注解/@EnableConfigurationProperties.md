@@ -1,3 +1,11 @@
+---
+icon: fa-solid fa-hashtag
+date: 2025-07-08
+category:
+  - SpringBoot
+tag:
+  - 注解
+---
 # `@EnableConfigurationProperties` 
 
 ## 一、简介
