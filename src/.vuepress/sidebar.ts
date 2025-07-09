@@ -31,6 +31,7 @@ export default sidebar({
   "/Spring/":"structure",
   "/SpringBoot/":"structure",
   "/SpringCloud/":"structure",
+  "/SpringMVC/":"structure",
   "/Database/":"structure",
   "/Netty/":"structure",
   "/Nginx/":"structure",
