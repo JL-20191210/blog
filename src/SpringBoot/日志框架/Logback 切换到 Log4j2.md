@@ -1,5 +1,5 @@
 ---
-title: Spring Boot 整合 Log4j2 日志系统实战
+title: 🚀从 Logback 切换到 Log4j2
 date: 2025-07-05
 author: JeanHu
 icon: fa-solid fa-file-lines
