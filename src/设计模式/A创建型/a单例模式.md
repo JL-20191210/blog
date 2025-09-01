@@ -64,7 +64,7 @@ public class Singleton {
 - ✅ 优点：延迟加载，节省资源。
 - ❌ 缺点：多线程环境下可能创建多个实例。
 
-![img](D:/develop/VsCodeProj/my-docs/src/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/A%E5%88%9B%E5%BB%BA%E5%9E%8B/assets/1755943183973-06b7b610-9ffd-4f89-a3fa-0acf6ee032e9.png)
+![img](assets/1755943183973-06b7b610-9ffd-4f89-a3fa-0acf6ee032e9.png)
 
 ------
 
