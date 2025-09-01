@@ -786,7 +786,7 @@ Redis 的脑裂问题是指在主从模式或集群模式下，由于网络分�
 ![三分恶面渣逆袭：Redis Sentinel工作流程](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/redis-4074d72a-886a-4892-8f55-80112005aad8.png)
 
 每个 Sentinel 实例会定期通过 PING 命令向主节点和从节点发送心跳包。
-  
+
 ![三分恶面渣逆袭：三个定时任务](https://cdn.tobebetterjavaer.com/tobebetterjavaer/images/sidebar/sanfene/redis-e7708f8d-ef34-4255-b5d0-cb300c649716.png)
 
 
