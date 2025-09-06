@@ -137,7 +137,6 @@ summary: 本文介绍 RabbitMQ 的核心基础知识，包括消息模型、交�
 | 消息延迟   | 微秒级                  | 毫秒级                         | 毫秒级       | 毫秒以内   |
 | 消息可靠性 | 高                      | 一般                           | 高           | 一般       |
 
-
 追求可用性：Kafka、 RocketMQ 、RabbitMQ
 追求可靠性：RabbitMQ、RocketMQ
 追求吞吐能力：RocketMQ、Kafka
@@ -180,7 +179,6 @@ docker run \
 安装完成后，我们访问 http://192.168.150.101:15672即可看到管理控制台。首次访问需要登录，默认的用户名和密码在配置文件中已经指定了。
 登录后即可看到管理控制台总览页面：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687137883587-56417f79-a649-43a5-be88-2ff777d3cd25.png#averageHue=%23f7f6f6&clientId=u6a529863-cf4b-4&from=paste&height=707&id=u7d848ee1&originHeight=876&originWidth=1572&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=83168&status=done&style=none&taskId=ub505f8cf-075f-462b-bce3-e0df935715d&title=&width=1268.168026574142)
-
 
 RabbitMQ对应的架构如图：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687136827222-52374724-79c9-4738-b53f-653cc0805d22.png#averageHue=%23e8d7b3&clientId=u6a529863-cf4b-4&from=paste&height=495&id=ub8dd8df6&originHeight=614&originWidth=1458&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=104273&status=done&style=none&taskId=uc0c132a5-73a3-4024-819f-61241da2511&title=&width=1176.2016429676203)
@@ -952,10 +950,10 @@ public void listenTopicQueue2(String msg){
 SpringAMQP提供了一个Queue类，用来创建队列：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1689945200636-5f4a823f-6f36-4088-9b67-7b9b3ae48079.png#averageHue=%23f9fcf7&clientId=uf6195e90-5366-4&from=paste&height=241&id=u2a7bba30&originHeight=269&originWidth=930&originalType=binary&ratio=1.115625023841858&rotation=0&showTitle=false&size=42392&status=done&style=none&taskId=uf1b5d62e-4e09-4ba8-a011-f8345dac005&title=&width=833.6134275631213)
 
-
 SpringAMQP还提供了一个Exchange接口，来表示所有不同类型的交换机：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687181804385-c500bc13-9f81-4071-ad8a-598fa5f57d97.png#averageHue=%23f8f8f7&clientId=u0fe93ba5-a0ba-4&from=paste&height=379&id=Qewqz&originHeight=470&originWidth=1469&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=23466&status=done&style=none&taskId=u357861af-c5aa-43c4-aafd-97dadaf8714&title=&width=1185.0755922629864)
-![](F:/%25E6%2595%2599%25E7%25A8%258B%25E8%25B5%2584%25E6%2596%2599/4%25E3%2580%2581%25E6%2596%25B0%25E7%2589%2588RabbitMQ%25E6%25B6%2588%25E6%2581%25AF%25E9%2598%259F%25E5%2588%2597/01.MQ%25E5%259F%25BA%25E7%25A1%2580/assets/image-20210717165552676.png)我们可以自己创建队列和交换机，不过SpringAMQP还提供了ExchangeBuilder来简化这个过程：
+
+我们可以自己创建队列和交换机，不过SpringAMQP还提供了ExchangeBuilder来简化这个过程：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1689945421476-fe44bf9a-d6eb-4f51-af02-374359c8e70b.png#averageHue=%23f8f7f5&clientId=uf6195e90-5366-4&from=paste&height=278&id=uae4334fe&originHeight=310&originWidth=781&originalType=binary&ratio=1.115625023841858&rotation=0&showTitle=false&size=34426&status=done&style=none&taskId=uc1b7bc5b-68b9-4ce9-afe5-9eb733e8f4b&title=&width=700.0560074481696)
 而在绑定队列和交换机时，则需要使用BindingBuilder来创建Binding对象：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1689945503733-13d2179c-f586-4de5-b18c-d3b5749f1f96.png#averageHue=%23dcab6a&clientId=uf6195e90-5366-4&from=paste&height=145&id=u91096ccd&originHeight=162&originWidth=659&originalType=binary&ratio=1.115625023841858&rotation=0&showTitle=false&size=16128&status=done&style=none&taskId=u1da153f0-6e86-45b2-900b-8f83e489358&title=&width=590.7002674882763)
@@ -1159,7 +1157,7 @@ Spring的消息发送代码接收的消息体是一个Object：
 1）创建测试队列
 首先，我们在consumer服务中声明一个新的配置类：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687183868403-242aa812-a07f-4748-8863-dc5d1e161dc1.png#averageHue=%23f9fbf8&clientId=u0fe93ba5-a0ba-4&from=paste&height=351&id=u77b665f4&originHeight=435&originWidth=1053&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=48481&status=done&style=none&taskId=uf6d36991-ec76-497c-93d3-3e96d9d6590&title=&width=849.4789643655035)
-利用@Bean的方式创建一个队列，![](F:/%25E6%2595%2599%25E7%25A8%258B%25E8%25B5%2584%25E6%2596%2599/4%25E3%2580%2581%25E6%2596%25B0%25E7%2589%2588RabbitMQ%25E6%25B6%2588%25E6%2581%25AF%25E9%2598%259F%25E5%2588%2597/01.MQ%25E5%259F%25BA%25E7%25A1%2580/assets/image-20211104102144275.png)具体代码：
+利用@Bean的方式创建一个队列，具体代码：
 
 ```java
 package com.itheima.consumer.config;
@@ -1182,7 +1180,7 @@ public class MessageConfig {
 
 重启consumer服务以后，该队列就会被自动创建出来了：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687184033157-c4c8e59e-a2b3-4b2b-9c20-ca3c597e556c.png#averageHue=%23f3f0ef&clientId=u0fe93ba5-a0ba-4&from=paste&height=456&id=u7c3fdb16&originHeight=565&originWidth=1196&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=72445&status=done&style=none&taskId=u03cddb0f-41a3-483d-83c7-d53a5ecb269&title=&width=964.8403052052632)
-![](F:/%25E6%2595%2599%25E7%25A8%258B%25E8%25B5%2584%25E6%2596%2599/4%25E3%2580%2581%25E6%2596%25B0%25E7%2589%2588RabbitMQ%25E6%25B6%2588%25E6%2581%25AF%25E9%2598%259F%25E5%2588%2597/01.MQ%25E5%259F%25BA%25E7%25A1%2580/assets/image-20211104102409347.png)
+
 
 2）发送消息
 我们在publisher模块的SpringAmqpTest中新增一个消息发送的代码，发送一个Map对象：
@@ -1238,7 +1236,7 @@ public MessageConverter messageConverter(){
 
 此时，我们到MQ控制台**删除**`object.queue`中的旧的消息。然后再次执行刚才的消息发送的代码，到MQ的控制台查看消息结构：
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687245684217-8b401cc5-29e6-4d08-9a9b-4fbe0dffd486.png#averageHue=%23f9f7f7&clientId=ucdd993b6-34bc-4&from=paste&height=432&id=ue5acc96b&originHeight=535&originWidth=990&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=41352&status=done&style=none&taskId=u158a691b-c3b3-4103-993a-3064dc7139b&title=&width=798.655436582952)
-![](F:/%25E6%2595%2599%25E7%25A8%258B%25E8%25B5%2584%25E6%2596%2599/4%25E3%2580%2581%25E6%2596%25B0%25E7%2589%2588RabbitMQ%25E6%25B6%2588%25E6%2581%25AF%25E9%2598%259F%25E5%2588%2597/01.MQ%25E5%259F%25BA%25E7%25A1%2580/assets/image-20211104102831385.png)
+
 
 ### 3.9.3.消费者接收Object
 
@@ -1250,8 +1248,6 @@ public void listenSimpleQueueMessage(Map<String, Object> msg) throws Interrupted
     System.out.println("消费者接收到object.queue消息：【" + msg + "】");
 }
 ```
-
-![](F:/%25E6%2595%2599%25E7%25A8%258B%25E8%25B5%2584%25E6%2596%2599/4%25E3%2580%2581%25E6%2596%25B0%25E7%2589%2588RabbitMQ%25E6%25B6%2588%25E6%2581%25AF%25E9%2598%259F%25E5%2588%2597/01.MQ%25E5%259F%25BA%25E7%25A1%2580/assets/image-20211104103017170.png)
 
 # 4.业务改造
 
