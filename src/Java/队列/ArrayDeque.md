@@ -11,7 +11,7 @@
 - [Java Queue接口](https://www.cainiaojc.com/java/java-queue.html)
 - [Java Deque接口](https://www.cainiaojc.com/java/java-deque.html)
 
-![Java中的ArrayDeque实现了两个接口：Queue和Deque](D:/develop/VsCodeProj/my-docs/src/Java/%E9%98%9F%E5%88%97/assets/java-arraydeque-class.png)
+![Java中的ArrayDeque实现了两个接口：Queue和Deque](assets/java-arraydeque-class.png)
 
 ## 创建ArrayDeque
 
