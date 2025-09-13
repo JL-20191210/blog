@@ -79,10 +79,8 @@ docker stop mq
 
 然后测试发送一条消息，会发现会每隔1秒重试1次，总共重试了3次。消息发送的超时重试机制配置成功了！
 
-:::warning
-**注意**：当网络不稳定的时候，利用重试机制可以有效提高消息发送的成功率。不过SpringAMQP提供的重试机制是**阻塞式**的重试，也就是说多次重试等待的过程中，当前线程是被阻塞的。
+:warning:**注意**：当网络不稳定的时候，利用重试机制可以有效提高消息发送的成功率。不过SpringAMQP提供的重试机制是**阻塞式**的重试，也就是说多次重试等待的过程中，当前线程是被阻塞的。
 如果对于业务性能有要求，建议禁用重试机制。如果一定要使用，请合理配置等待时长和重试次数，当然也可以考虑使用异步线程来执行发送消息的代码。
-:::
 
 ## 1.2.生产者确认机制
 
@@ -95,13 +93,19 @@ docker stop mq
 
 针对上述情况，RabbitMQ提供了生产者消息确认机制，包括`Publisher Confirm`和`Publisher Return`两种。在开启确认机制的情况下，当生产者发送消息给MQ后，MQ会根据消息处理的情况返回不同的**回执**。
 具体如图所示：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1690366611659-d5c7f355-7ab1-4eb8-8488-13e1d98843ce.png#averageHue=%23faf7f7&clientId=ucb403171-cc9e-4&from=paste&height=376&id=ue3c6e070&originHeight=466&originWidth=1434&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=81765&status=done&style=none&taskId=ue6af669a-1775-4a0f-ad77-cd9bc059880&title=&width=1156.8402990504578)
+
+![image.png](assets/1690366611659-d5c7f355-7ab1-4eb8-8488-13e1d98843ce-175756213304269.png)
 总结如下：
 
 - 当消息投递到MQ，但是路由失败时，通过**Publisher Return**返回异常信息，同时返回ack的确认信息，代表投递成功
 - 临时消息投递到了MQ，并且入队成功，返回ACK，告知投递成功
 - 持久消息投递到了MQ，并且入队完成持久化，返回ACK ，告知投递成功
 - 其它情况都会返回NACK，告知投递失败
+
+
+
+:dog:`ack` 确认的是消息 **到达交换机**，不是到达队列。**路由失败**指的是交换机无法匹配任何队列，这属于 **逻辑失败**，不影响消息到达交换机的事实。
+
 
 
 其中`ack`和`nack`属于**Publisher Confirm**机制，`ack`是投递成功；`nack`是投递失败。而`return`则属于**Publisher Return**机制。
@@ -131,7 +135,7 @@ spring:
 ### 1.3.2.定义ReturnCallback
 
 每个`RabbitTemplate`只能配置一个`ReturnCallback`，因此我们可以在配置类中统一设置。我们在publisher模块定义一个配置类：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687341529298-150b401d-67f9-4958-acdb-0d3147b0532b.png#averageHue=%23f9fbf8&clientId=ue4302575-73b6-4&from=paste&height=278&id=u6d09b8df&originHeight=345&originWidth=808&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=33987&status=done&style=none&taskId=uf816a0ec-4ff4-4c09-bffc-766884fb5e7&title=&width=651.8319118778032)
+![image.png](assets/1687341529298-150b401d-67f9-4958-acdb-0d3147b0532b.png)
 内容如下：
 
 ```java
@@ -171,14 +175,14 @@ public class MqConfig {
 ### 1.3.3.定义ConfirmCallback
 
 由于每个消息发送时的处理逻辑不一定相同，因此ConfirmCallback需要在每次发消息时定义。具体来说，是在调用RabbitTemplate中的convertAndSend方法时，多传递一个参数：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687348187394-21a3698a-277a-478b-8cb8-2ee5bc79207f.png#averageHue=%23f1efed&clientId=ue4302575-73b6-4&from=paste&height=167&id=ubbb0d508&originHeight=207&originWidth=939&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=26725&status=done&style=none&taskId=u0ffba104-eb55-4f79-be54-f249333680d&title=&width=757.5125807589818)
+![image.png](assets/1687348187394-21a3698a-277a-478b-8cb8-2ee5bc79207f.png)
 这里的CorrelationData中包含两个核心的东西：
 
 - `id`：消息的唯一标示，MQ对不同的消息的回执以此做判断，避免混淆
 - `SettableListenableFuture`：回执结果的Future对象
 
 将来MQ的回执就会通过这个`Future`来返回，我们可以提前给`CorrelationData`中的`Future`添加回调函数来处理消息回执：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687348449866-dee08277-6bc9-4463-9cb8-95013e05a6a2.png#averageHue=%23f3f2f0&clientId=ue4302575-73b6-4&from=paste&height=194&id=u536cb2c1&originHeight=241&originWidth=940&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=26129&status=done&style=none&taskId=u1d347aea-f7e9-43e2-875e-773b69e1bdf&title=&width=758.3193034221969)
+![image.png](assets/1687348449866-dee08277-6bc9-4463-9cb8-95013e05a6a2.png)
 
 我们新建一个测试，向系统自带的交换机发送消息，并且添加`ConfirmCallback`：
 
@@ -210,19 +214,19 @@ void testPublisherConfirm() {
 ```
 
 执行结果如下：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687351726363-c27337c1-cd6e-497e-96ad-ac55fe4cb9e4.png#averageHue=%23f9f6df&clientId=ue4302575-73b6-4&from=paste&height=321&id=u37548b33&originHeight=398&originWidth=1657&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=224878&status=done&style=none&taskId=u5b86f40b-a7f8-4c5f-8fae-4edb9ab2cee&title=&width=1336.7394529474257)
+![image.png](assets/1687351726363-c27337c1-cd6e-497e-96ad-ac55fe4cb9e4.png)
 可以看到，由于传递的`RoutingKey`是错误的，路由失败后，触发了`return callback`，同时也收到了ack。
 当我们修改为正确的`RoutingKey`以后，就不会触发`return callback`了，只收到ack。
 而如果连交换机都是错误的，则只会收到nack。
 
-:::warning
+:warning:
+
 **注意**：
 开启生产者确认比较消耗MQ性能，一般不建议开启。而且大家思考一下触发确认的几种情况：
 
 - 路由失败：一般是因为RoutingKey错误导致，往往是编程导致
 - 交换机名称错误：同样是编程错误导致
 - MQ内部故障：这种需要处理，但概率往往较低。因此只有对消息可靠性要求非常高的业务才需要开启，而且仅仅需要开启ConfirmCallback处理nack就可以了。
-  :::
 
 # 2.MQ的可靠性
 
@@ -247,18 +251,17 @@ void testPublisherConfirm() {
 ### 2.1.2.队列持久化
 
 在控制台的Queues页面，添加队列时，同样可以配置队列的`Durability`参数：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687353771968-5c560b86-a1ae-4649-8597-c7ebfeffa9a5.png#averageHue=%23f8f7f6&clientId=ue4302575-73b6-4&from=paste&height=295&id=I03Rh&originHeight=366&originWidth=1130&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=30872&status=done&style=none&taskId=u7425f64c-6c68-4b86-a558-9c10f825f3f&title=&width=911.5966094330664)
+![image.png](assets/1687353771968-5c560b86-a1ae-4649-8597-c7ebfeffa9a5.png)
 除了持久化以外，你可以看到队列还有很多其它参数，有一些我们会在后期学习。
 
 ### 2.1.3.消息持久化
 
 在控制台发送消息的时候，可以添加很多参数，而消息的持久化是要配置一个`properties`：
-![image.png](https://cdn.nlark.com/yuque/0/2023/png/27967491/1687354083723-84971642-712d-42bc-ba65-6e3b3b33758c.png#averageHue=%23faf8f8&clientId=ue4302575-73b6-4&from=paste&height=423&id=T4xqJ&originHeight=524&originWidth=995&originalType=binary&ratio=1.2395833730697632&rotation=0&showTitle=false&size=17663&status=done&style=none&taskId=u75d6c2e2-1770-43f8-9a9f-9bc5f480099&title=&width=802.6890498990275)
+![image.png](assets/1687354083723-84971642-712d-42bc-ba65-6e3b3b33758c.png)
 
-:::warning
+
 **说明**：在开启持久化机制以后，如果同时还开启了生产者确认，那么MQ会在消息持久化以后才发送ACK回执，进一步确保消息的可靠性。
 不过出于性能考虑，为了减少IO次数，发送到MQ的消息并不是逐条持久化到数据库的，而是每隔一段时间批量持久化。一般间隔在100毫秒左右，这就会导致ACK有一定的延迟，因此建议生产者确认全部采用异步方式。
-:::
 
 ## 2.2.LazyQueue
 
