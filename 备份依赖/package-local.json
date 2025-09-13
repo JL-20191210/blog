@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@vuepress/bundler-webpack": "2.0.0-rc.17",
+    "@vuepress/plugin-search": "^2.0.0-rc.52",
     "sass-embedded": "^1.79.4",
     "sass-loader": "^16.0.2",
     "vue": "^3.5.10",
