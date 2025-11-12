@@ -158,7 +158,11 @@ publicvoidbasicPublish(String exchange, String routingKey, boolean mandatory, Ba
 
 ### 10、RabbitMQ消息基于什么传输？ 
 
-由于 TCP 连接的创建和销毁开销较大，且并发数受系统资源限制，会造成性能瓶颈。RabbitMQ 使用 **信道**的方式来传输数据。信道是建立在真实的 TCP 连接内的虚拟连接，且每条 TCP 连接上的信道数量没有限制。 11、RabbitMQ支持消息的幂等性吗？ 支持。在消息生产时，MQ 内部针对每条生产者发送的消息生成一个 inner-msg-id，作为去重的依据（消息投递失败并重传），避免重复的消息进入队列。 
+由于 TCP 连接的创建和销毁开销较大，且并发数受系统资源限制，会造成性能瓶颈。RabbitMQ 使用 **信道**的方式来传输数据。信道是建立在真实的 TCP 连接内的虚拟连接，且每条 TCP 连接上的信道数量没有限制。 
+
+### 11、RabbitMQ支持消息的幂等性吗？ 
+
+支持。在消息生产时，MQ 内部针对每条生产者发送的消息生成一个 inner-msg-id，作为去重的依据（消息投递失败并重传），避免重复的消息进入队列。 
 
 在消息消费时，要求消息体中必须要有一个 bizId（对于同一业务全局唯一，如支付 ID、订单 ID、帖子 ID 等）作为去重的依据，避免同一条消息被重复消费。
 
@@ -174,7 +178,7 @@ publicvoidbasicPublish(String exchange, String routingKey, boolean mandatory, Ba
 ```plain
 事务的实现主要是对信道(Channel)的设置，主要方法如下：
 
-1. channel.txSelect()  声明启动事务模式
+1.channel.txSelect()  声明启动事务模式
 
 2.channel.txCommit() 提交事务
 
